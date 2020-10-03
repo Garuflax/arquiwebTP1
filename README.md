@@ -20,4 +20,5 @@
 
 ### Backend
 
+* `python3 -m venv venv` crear ambiente de desarrollo (hacerlo solo una vez)
 * `. venv/bin/activate` activar ambiente de desarrollo en carpeta backend
