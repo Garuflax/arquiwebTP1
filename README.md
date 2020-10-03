@@ -10,6 +10,14 @@
 ### Backend
 
 * Python3
-* pipenv: correr `pip3 install pipenv` en terminal (tener pip antes)
+* venv: correr `sudo apt install python3-venv` en terminal
 
+## Comandos útiles
 
+### Frontend
+
+* `ng version` para ver versión de angular
+
+### Backend
+
+* `. venv/bin/activate` activar ambiente de desarrollo en carpeta backend
