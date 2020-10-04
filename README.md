@@ -17,6 +17,7 @@
 ### Frontend
 
 * `ng version` para ver versión de angular
+* `ng serve --open` para correrlo
 
 ### Backend
 
