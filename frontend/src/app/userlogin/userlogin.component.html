@@ -1,4 +1,13 @@
-<input #box (keyup.enter)="onEnter(box.value)">
-<p><button (click)="onEnter(box.value)">Entrar</button></p>
+<div>
+    <label for="inputname">Username</label>
+    <input #boxUsername (keyup.enter) ="onEnter(boxUsername.value, boxPass.value)" id =  "inputname">
+</div>
+
+<div>
+    <p><label for="inputpass">Password</label></p>
+    <input type="password" #boxPass (keyup.enter) ="onEnter(boxUsername.value, boxPass.value)" id =  "inputpass">
+    <p><button (click)="onEnter(boxUsername.value, boxPass.value)">Entrar</button></p>
+</div>
 
 {{nombreIngresado}}
+<p>{{passwordIngresado}}</p>

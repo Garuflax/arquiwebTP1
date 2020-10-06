@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserloginComponent   {
   nombreIngresado = '';
-  onEnter(value: string) { this.nombreIngresado = value; }
+  passwordIngresado = '';
+  onEnter(nameValue: string, passValue: string) { this.nombreIngresado = nameValue; this.passwordIngresado=passValue;  }
 
 }
