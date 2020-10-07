@@ -1,2 +1,2 @@
-include flaskr/schema.sql
+include yeabackend/schema.sql
 global-exclude *.pyc

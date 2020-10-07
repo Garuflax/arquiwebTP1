@@ -23,7 +23,7 @@
 
 * `python3 -m venv venv` crear ambiente virtual (hacerlo solo una vez)
 * `. venv/bin/activate` activar ambiente virtual
-* `pip install -e .` instalar proyecto en ambiente virtual
+* `pip install -e .` instalar proyecto en modo editable (hacerlo en el ambiente virtual)
 
 
 
