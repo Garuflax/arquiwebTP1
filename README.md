@@ -24,8 +24,9 @@
 * `python3 -m venv venv` crear ambiente virtual (hacerlo solo una vez)
 * `. venv/bin/activate` activar ambiente virtual
 * `pip install -e .` instalar proyecto en modo editable (hacerlo en el ambiente virtual)
-
-
+* `pytest` para correr tests
+* `coverage run -m pytest` para correr tests y analizar cobertura
+* `coverage report` para ver el reporte del análisis de cobertura
 
 ## Tutoriales
 
