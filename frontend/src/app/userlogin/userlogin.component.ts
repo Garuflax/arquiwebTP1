@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../user';
 
 @Component({
   selector: 'app-userlogin',
@@ -6,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./userlogin.component.css'],
 })
 export class UserloginComponent   {
-  nombreIngresado = '';
-  passwordIngresado = '';
-  onEnter(nameValue: string, passValue: string) { this.nombreIngresado = nameValue; this.passwordIngresado=passValue;  }
+  user
+
+  onEnter(nameValue: string, passValue: string) {
+    this.user = new User(nameValue, passValue)
+    }
 
 }
