@@ -2,16 +2,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { UserloginComponent } from './userlogin/userlogin.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserloginComponent,
   ],
   imports: [
     BrowserModule,
+    AuthModule,
     AppRoutingModule
   ],
   providers: [],
