@@ -44,4 +44,37 @@ def register():
         db.commit()
 
     return jsonify(created=created,
-                   message=message)
+                   message=message), 201
+
+@bp.route('/login', methods=['POST'])
+def login():
+    json_data = request.get_json()
+    username = json_data['username']
+    password = json_data['password']
+    db = get_db()
+    error = None
+    user = db.execute(
+        'SELECT * FROM user WHERE username = ?', (username,)
+    ).fetchone()
+
+    if user is None:
+        error = 'Incorrect username.'
+    elif not check_password_hash(user['password'], password):
+        error = 'Incorrect password.'
+
+    if error is None:
+        session.clear()
+        session['user_id'] = user['id']
+        return jsonify(
+            message='Authenticated succesfully.',
+            is_admin=user['is_admin'])
+
+    return jsonify(
+            message='Authentication failed.',
+            error=error), 401
+
+@bp.route('/logout', methods=['POST'])
+def logout():
+    session.clear()#TODO check if it logged in
+    return jsonify(
+            message='Logged out succesfully.')

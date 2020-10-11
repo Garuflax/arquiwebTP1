@@ -28,3 +28,32 @@ def test_register_validate_input(client, username, password, message):
         data={'username': username, 'password': password}#json={"mytext":"lalala"} FIXME
     )
     assert message in response.data
+
+def test_login(client, auth):
+    assert client.post('/auth/login', json={
+        'username': 'usertest', 'password': 'usertest'
+    }).status_code == 200
+    response = auth.login()
+    #assert response.headers['Location'] == 'http://localhost/'
+
+    #with client:
+     #   client.get('/')
+     #   assert session['user_id'] == 1
+      #  assert g.user['username'] == 'test'
+
+@pytest.mark.parametrize(('username', 'password', 'message'), (
+    ('a', 'usertest', 'Incorrect username.'),
+    ('usertest', 'a', 'Incorrect password.'),
+))
+def test_login_validate_input(auth, username, password, message):
+    response = auth.login(username, password)
+    json_data = response.get_json()
+    assert message == json_data['error']
+    assert 'Authentication failed.' == json_data['message']
+
+def test_logout(client, auth):
+    auth.login()
+
+    with client:
+        auth.logout()
+        assert 'user_id' not in session
