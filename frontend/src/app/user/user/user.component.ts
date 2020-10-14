@@ -12,4 +12,8 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  inform(): void {
+      //TODO: send to the server the change of state that applies
+  }
+
 }
