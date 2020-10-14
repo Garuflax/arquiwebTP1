@@ -11,6 +11,9 @@
 
 * Python3
 * venv: correr `sudo apt install python3-venv` en terminal
+* flask-cors: `pip install flask-cors` en ambiente virtual
+* pytest: `pip install pytest` en ambiente virtual
+* coverage: `pip install coverage` en ambiente virtual
 
 ## Comandos útiles
 
