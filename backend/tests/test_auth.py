@@ -7,7 +7,7 @@ from yeabackend.db import get_db
 def test_register(client, app):
     #assert client.get('/auth/register').status_code == 200
     response = client.post(
-        '/auth/register', data={'username': 'a', 'password': 'a'}
+        '/auth/register', json={'username': 'a', 'password': 'a'}
     )
     #assert 'http://localhost/auth/login' == response.headers['Location']
 
@@ -25,7 +25,7 @@ def test_register(client, app):
 def test_register_validate_input(client, username, password, message):
     response = client.post(
         '/auth/register',
-        data={'username': username, 'password': password}#json={"mytext":"lalala"} FIXME
+        json={'username': username, 'password': password}
     )
     assert message in response.data
 

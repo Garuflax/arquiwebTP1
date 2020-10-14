@@ -4,9 +4,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { LogInForm } from './logInForm';
+import { AuthForm } from './authForm';
 import { LogInResponse } from './logInResponse';
 import { LogOutResponse } from './logOutResponse';
+import { RegisterResponse } from './registerResponse';
 
 @Injectable({
     providedIn: 'root'
@@ -22,8 +23,17 @@ export class AuthService {
     constructor(
         private http: HttpClient) { }
 
+    /** POST register to the server */
+    register(form: AuthForm): Observable<RegisterResponse> {
+        const url = `${this.authUrl}/register`;
+        return this.http.post<RegisterResponse>(url, form, this.httpOptions)
+        .pipe(
+            catchError(this.handleError<RegisterResponse>('register'))
+            );
+    }
+
     /** POST login to the server */
-    login(form: LogInForm): Observable<LogInResponse> {
+    login(form: AuthForm): Observable<LogInResponse> {
         const url = `${this.authUrl}/login`;
         return this.http.post<LogInResponse>(url, form, this.httpOptions)
         .pipe(
@@ -33,7 +43,7 @@ export class AuthService {
 
     /** logout from the server */
     logout(): Observable<LogOutResponse> {
-        const url = `${this.authUrl}/logout:5000`;
+        const url = `${this.authUrl}/logout`;
         return this.http.get<LogOutResponse>(url)
         .pipe(
             catchError(this.handleError<LogOutResponse>('logout'))

@@ -15,16 +15,13 @@ def register():
     """Register user without
     admin privilege
     """
-    username = request.form['username']
-    password = request.form['password']
+    json_data = request.get_json()
+    username = json_data['username']
+    password = json_data['password']
     db = get_db()
 
     created = True
     message = 'User registered succesfully'
-
-    #json_data = request.get_json()   TODO decide if we are going to use
-    #email = json_data['email']       Forms or JSON
-    #password = json_data['password']
 
     if not username:
         abort(400, 'Username is required.')
