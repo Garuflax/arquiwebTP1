@@ -12,7 +12,7 @@ class AuthActions(object):
     def __init__(self, client):
         self._client = client
 
-    def login(self, username='test', password='test'):
+    def login(self, username='usertest', password='usertest'):
         return self._client.post(
             '/auth/login',
             json={'username': username, 'password': password}

@@ -26,7 +26,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
+    # a simple page that says hello TODO: change for client at index.html
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
@@ -36,5 +36,8 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+    from . import location
+    app.register_blueprint(location.bp)
 
     return app
