@@ -3,6 +3,7 @@ from yeabackend.db import get_db
 
 def test_login_required(client):
     assert client.post('/location/create').status_code == 401
+    assert client.get('/location/all').status_code == 401
     assert client.get('/location/1').status_code == 401
     assert client.put('/location/1').status_code == 401
     assert client.delete('/location/1').status_code == 401
@@ -97,3 +98,17 @@ def test_delete(client, auth, app):
         db = get_db()
         location = db.execute('SELECT * FROM location WHERE id = 1').fetchone()
         assert location is None
+
+def test_all(client, auth, app):
+    auth.login()
+    response = client.get('/location/all')
+    assert response.status_code == 200
+    json_data = response.get_json()
+    locations = json_data['locations']
+    assert 1 == len(locations)
+
+    location = locations[0]
+    assert 'test location' == location['name']
+    assert 10 == location['maximum_capacity']
+    assert 1 == location['author_id']
+    assert 1 == location['id']

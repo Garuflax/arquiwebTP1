@@ -58,6 +58,26 @@ def location(id):
         author_id=location['author_id'],
         id=location['id'])
 
+@bp.route('/all', methods=['GET'])
+def all():
+
+    login_required()
+
+    locations = []
+    c = get_db().cursor()
+    c.execute('SELECT * FROM location')
+
+    for row in c:
+        locations.append(dict(
+            name=row['name'],
+            maximum_capacity=row['maximum_capacity'],
+            author_id=row['author_id'],
+            id=row['id']
+        ))
+        
+
+    return jsonify(locations=locations)
+
 def get_location(id, check_author=True):
     location = get_db().execute(
         'SELECT p.id, name, maximum_capacity, author_id'
