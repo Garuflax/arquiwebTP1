@@ -25,16 +25,13 @@ def create():
     return jsonify(created=True,
                    message='Location created succesfully'), 201
 
-@bp.route('/<int:id>', methods=['PUT','DELETE'])
+@bp.route('/<int:id>', methods=['GET','PUT','DELETE'])
 def location(id):
     
     login_required()
 
-    get_location(id)
-
-    message = ''
-
     if request.method == 'PUT':
+        get_location(id)
         (name, maximum_capacity) = get_fields(request.get_json())
         
         db = get_db()
@@ -45,14 +42,21 @@ def location(id):
         )
         db.commit()
 
-        message = 'Location updated succesfully.'
-    else:
+        return jsonify(message='Location updated succesfully.')
+    elif request.method == 'DELETE':
+        get_location(id)
+
         db = get_db()
         db.execute('DELETE FROM location WHERE id = ?', (id,))
         db.commit()
 
-        message = 'Location deleted succesfully.'
-    return jsonify(message=message)
+        return jsonify(message='Location deleted succesfully.')
+    
+    location = get_location(id, False)
+    return jsonify(name=location['name'],
+        maximum_capacity=location['maximum_capacity'],
+        author_id=location['author_id'],
+        id=location['id'])
 
 def get_location(id, check_author=True):
     location = get_db().execute(
