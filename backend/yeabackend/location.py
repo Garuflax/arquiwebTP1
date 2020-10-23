@@ -13,15 +13,7 @@ def create():
 
     login_required()
 
-    json_data = request.get_json()
-    name = json_data['name']
-    maximum_capacity = json_data['maximum_capacity']
-
-    if not name:
-        abort(400, 'Name is required.')
-
-    if not maximum_capacity:
-        abort(400, 'Maximum capacity is required.')
+    (name, maximum_capacity) = get_fields(request.get_json())
 
     db = get_db()
     db.execute(
@@ -33,21 +25,36 @@ def create():
     return jsonify(created=True,
                    message='Location created succesfully'), 201
 
-@bp.route('/update', methods=['POST'])
-def update():
-
+@bp.route('/<int:id>', methods=['PUT','DELETE'])
+def location(id):
+    
     login_required()
 
-    json_data = request.get_json()
+    get_location(id)
 
-    #TODO better sanitation
-    #if 'name' not in json_data or 'maximum_capacity' not in json_data or 'id' not in json_data:
-    #       return abort(400, 'Missing field.')
+    message = ''
 
-    name = json_data['name']
-    maximum_capacity = json_data['maximum_capacity']
-    id = json_data['id']
+    if request.method == 'PUT':
+        (name, maximum_capacity) = get_fields(request.get_json())
+        
+        db = get_db()
+        db.execute(
+            'UPDATE location SET name = ?, maximum_capacity = ?'
+            ' WHERE id = ?',
+            (name, maximum_capacity, id)
+        )
+        db.commit()
 
+        message = 'Location updated succesfully.'
+    else:
+        db = get_db()
+        db.execute('DELETE FROM location WHERE id = ?', (id,))
+        db.commit()
+
+        message = 'Location deleted succesfully.'
+    return jsonify(message=message)
+
+def get_location(id, check_author=True):
     location = get_db().execute(
         'SELECT p.id, name, maximum_capacity, author_id'
         ' FROM location p JOIN user u ON p.author_id = u.id'
@@ -58,9 +65,21 @@ def update():
     if location is None:
         abort(404, "Location id {0} doesn't exist.".format(id))
 
-    check_author=True
     if check_author and location['author_id'] != g.user['id']:
         abort(403)
+
+    return location
+
+def get_fields(json_data):
+
+    fields = ['name', 'maximum_capacity']
+
+    for field in fields:
+        if field not in json_data:
+            abort(400, 'Missing field: {0}.'.format(field))
+
+    name = json_data['name']
+    maximum_capacity = json_data['maximum_capacity']
 
     if not name:
         abort(400, 'Name is required.')
@@ -68,11 +87,4 @@ def update():
     if not maximum_capacity:
         abort(400, 'Maximum capacity is required.')
 
-    db = get_db()
-    db.execute(
-        'UPDATE location SET name = ?, maximum_capacity = ?'
-        ' WHERE id = ?',
-        (name, maximum_capacity, id)
-    )
-    db.commit()
-    return jsonify(message='Location updated succesfully')
+    return (name, maximum_capacity)
