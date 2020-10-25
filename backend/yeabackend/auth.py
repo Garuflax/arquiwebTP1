@@ -18,6 +18,7 @@ def register():
     json_data = request.get_json()
     username = json_data['username']
     password = json_data['password']
+    email = json_data['email']
     db = get_db()
 
     created = True
@@ -27,6 +28,8 @@ def register():
         abort(400, 'Username is required.')
     elif not password:
         abort(400, 'Password is required.')
+    elif not email:
+        abort(400, 'Email is required.')
     elif db.execute(
         'SELECT id FROM user WHERE username = ?', (username,)
     ).fetchone() is not None:
@@ -35,8 +38,8 @@ def register():
 
     if created:
         db.execute(
-            'INSERT INTO user (username, password, is_admin) VALUES (?, ?, ?)',
-            (username, generate_password_hash(password), False)
+            'INSERT INTO user (username, password, email, is_admin) VALUES (?, ?, ?, ?)',
+            (username, generate_password_hash(password), email, False)
         )
         db.commit()
 

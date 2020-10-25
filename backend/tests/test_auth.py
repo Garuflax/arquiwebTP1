@@ -7,7 +7,7 @@ from yeabackend.db import get_db
 def test_register(client, app):
     #assert client.get('/auth/register').status_code == 200
     response = client.post(
-        '/auth/register', json={'username': 'a', 'password': 'a'}
+        '/auth/register', json={'username': 'a', 'password': 'a', 'email': 'a@test.com'}
     )
     #assert 'http://localhost/auth/login' == response.headers['Location']
 
@@ -17,15 +17,16 @@ def test_register(client, app):
         ).fetchone() is not None
 
 
-@pytest.mark.parametrize(('username', 'password', 'message'), (
-    ('', '', b'Username is required.'),
-    ('a', '', b'Password is required.'),
-    ('usertest', 'usertest', b'already registered'),
+@pytest.mark.parametrize(('username', 'password', 'email','message'), (
+    ('', '', '',b'Username is required.'),
+    ('a', '', '',b'Password is required.'),
+    ('a', 'a', '',b'Email is required.'),
+    ('usertest', 'usertest', 'a@test.com',b'already registered'),
 ))
-def test_register_validate_input(client, username, password, message):
+def test_register_validate_input(client, username, password, email, message):
     response = client.post(
         '/auth/register',
-        json={'username': username, 'password': password}
+        json={'username': username, 'password': password, 'email': email}
     )
     assert message in response.data
 
