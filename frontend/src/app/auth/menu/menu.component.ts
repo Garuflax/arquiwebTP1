@@ -3,7 +3,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { AuthForm } from '../authForm';
+import { LogInForm } from '../logInForm';
+import { RegisterForm } from '../registerForm';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class MenuComponent implements OnInit {
         });
         this.registerForm = this.formBuilder.group({
             username: '',
-            password: ''
+            password: '',
+            email: ''
         });
     }
 
@@ -51,7 +53,7 @@ export class MenuComponent implements OnInit {
         
         this.registerForm.reset();
 
-        console.warn('Your order has been submitted', userData);
+        console.log('Registered successfully?', userData);
     }
 
 }

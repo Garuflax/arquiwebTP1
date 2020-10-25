@@ -4,7 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { AuthForm } from './authForm';
+import { LogInForm } from './logInForm';
+import { RegisterForm } from './registerForm';
 import { LogInResponse } from './logInResponse';
 import { LogOutResponse } from './logOutResponse';
 import { RegisterResponse } from './registerResponse';
@@ -24,7 +25,7 @@ export class AuthService {
         private http: HttpClient) { }
 
     /** POST register to the server */
-    register(form: AuthForm): Observable<RegisterResponse> {
+    register(form: RegisterForm): Observable<RegisterResponse> {
         const url = `${this.authUrl}/register`;
         return this.http.post<RegisterResponse>(url, form, this.httpOptions)
         .pipe(
@@ -33,7 +34,7 @@ export class AuthService {
     }
 
     /** POST login to the server */
-    login(form: AuthForm): Observable<LogInResponse> {
+    login(form: LogInForm): Observable<LogInResponse> {
         const url = `${this.authUrl}/login`;
         return this.http.post<LogInResponse>(url, form, this.httpOptions)
         .pipe(
