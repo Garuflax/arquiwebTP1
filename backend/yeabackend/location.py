@@ -56,7 +56,9 @@ def location(id):
     return jsonify(name=location['name'],
         maximum_capacity=location['maximum_capacity'],
         author_id=location['author_id'],
-        id=location['id'])
+        id=location['id'],
+        people_inside = location['people_inside']
+    )
 
 @bp.route('/all', methods=['GET'])
 def all():
@@ -80,7 +82,7 @@ def all():
 
 def get_location(id, check_author=True):
     location = get_db().execute(
-        'SELECT p.id, name, maximum_capacity, author_id'
+        'SELECT p.id, name, maximum_capacity, author_id, people_inside'
         ' FROM location p JOIN user u ON p.author_id = u.id'
         ' WHERE p.id = ?',
         (id,)

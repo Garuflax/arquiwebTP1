@@ -1,2 +1,7 @@
-<p>check works!</p>
-<p>TODO: scanear qr del lugar que se entra/sale</p>
+<h1>CHECK</h1>
+<p>Please scan the location's QR code </p>
+
+<zxing-scanner [(device)]="currentDevice" 
+    (scanSuccess)="onCodeResult($event)"
+    [tryHarder]="tryHarder">
+</zxing-scanner>

@@ -40,4 +40,7 @@ def create_app(test_config=None):
     from . import location
     app.register_blueprint(location.bp)
 
+    from . import check
+    app.register_blueprint(check.bp)
+
     return app

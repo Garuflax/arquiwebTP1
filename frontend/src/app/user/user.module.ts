@@ -6,12 +6,16 @@ import { UserComponent } from './user/user.component';
 import { LocationsComponent } from './locations/locations.component';
 import { CheckComponent } from './check/check.component';
 
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { LocationDetailComponent } from './locations/location-detail.component';
+
 
 @NgModule({
-  declarations: [UserComponent, LocationsComponent, CheckComponent],
+  declarations: [UserComponent, LocationsComponent, CheckComponent, LocationDetailComponent],
   imports: [
     CommonModule,
-    UserRoutingModule
+    UserRoutingModule,
+    ZXingScannerModule
   ]
 })
 export class UserModule { }
