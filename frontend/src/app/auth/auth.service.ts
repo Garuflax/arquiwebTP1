@@ -29,6 +29,7 @@ export class AuthService {
         const url = `${this.authUrl}/register`;
         return this.http.post<RegisterResponse>(url, form, this.httpOptions)
         .pipe(
+
             catchError(this.handleError<RegisterResponse>('register'))
             );
     }

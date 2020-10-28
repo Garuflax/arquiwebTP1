@@ -38,6 +38,8 @@ export class MenuComponent implements OnInit {
     login(userData) {
         this.authService.login(userData)
         .subscribe(response => {
+            localStorage.setItem('accessToken', response.accessToken);
+
             if(response.is_admin){
                 this.router.navigate(['/admin']);
             } else {
@@ -50,7 +52,7 @@ export class MenuComponent implements OnInit {
     register(userData) {
         this.authService.register(userData)
         .subscribe(response => console.log(response));//TODO redirect
-        
+
         this.registerForm.reset();
 
         console.log('Registered successfully?', userData);
