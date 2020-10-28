@@ -1,17 +1,25 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, jsonify
 )
+from flask_jwt_extended import (
+    create_access_token, create_refresh_token, get_jwt_identity,
+    verify_jwt_in_request, verify_jwt_refresh_token_in_request,
+    jwt_required
+)
+
 from werkzeug.exceptions import abort
 
-from yeabackend.auth import login_required
+#from yeabackend.auth import login_required
 from yeabackend.db import get_db
 
 bp = Blueprint('location', __name__, url_prefix='/location')
 
 @bp.route('/create', methods=['POST'])
+@jwt_required
 def create():
 
-    login_required()
+    user_id = get_jwt_identity()
+    #login_required()
 
     (name, maximum_capacity) = get_fields(request.get_json())
 
@@ -19,16 +27,17 @@ def create():
     db.execute(
         'INSERT INTO location (name, maximum_capacity, author_id)'
         ' VALUES (?, ?, ?)',
-        (name, maximum_capacity, g.user['id'])
+        (name, maximum_capacity, user_id)
     )
     db.commit()
     return jsonify(created=True,
                    message='Location created succesfully'), 201
 
 @bp.route('/<int:id>', methods=['GET','PUT','DELETE'])
+@jwt_required
 def location(id):
     
-    login_required()
+    #login_required()
 
     if request.method == 'PUT':
         get_location(id)
@@ -61,9 +70,10 @@ def location(id):
     )
 
 @bp.route('/all', methods=['GET'])
+@jwt_required
 def all():
-
-    login_required()
+    
+    #login_required()
 
     locations = []
     c = get_db().cursor()
@@ -81,6 +91,9 @@ def all():
     return jsonify(locations=locations)
 
 def get_location(id, check_author=True):
+
+    user_id = get_jwt_identity()
+
     location = get_db().execute(
         'SELECT p.id, name, maximum_capacity, author_id, people_inside'
         ' FROM location p JOIN user u ON p.author_id = u.id'
@@ -91,7 +104,7 @@ def get_location(id, check_author=True):
     if location is None:
         abort(404, "Location id {0} doesn't exist.".format(id))
 
-    if check_author and location['author_id'] != g.user['id']:
+    if check_author and location['author_id'] != user_id:
         abort(403)
 
     return location
