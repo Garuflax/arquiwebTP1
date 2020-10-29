@@ -1,8 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { JwtModule } from "@auth0/angular-jwt";
 
-import { HttpClientModule } from '@angular/common/http';
+// import { JwtModule } from "@auth0/angular-jwt";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+
+// Interceptors
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +15,9 @@ import { AdminModule } from './admin/admin.module';
 import { UserModule } from './user/user.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
+export function tokenGetter() {
+  return localStorage.getItem("access_token");
+}
 
 
 @NgModule({
@@ -25,18 +32,19 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     UserModule,
     AppRoutingModule,
     HttpClientModule,
-    JwtModule.forRoot({
-      config:{
-        throwNoTokenError: true,
-        tokenGetter:() => {
-          return localStorage.getItem('access_token');
-        },
-        whitelistedDomains: ['localhost:5000','localhost:4200'],
-        blacklistedRoutes:[]
-      }
-    }),
+    // JwtModule.forRoot({
+    //   config:{
+    //     throwNoTokenError: true,
+    //     tokenGetter,
+    //     allowedDomains: ['http://localhost:5000'],
+    //   }
+    // }),
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

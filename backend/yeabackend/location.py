@@ -66,7 +66,7 @@ def location(id):
         maximum_capacity=location['maximum_capacity'],
         author_id=location['author_id'],
         id=location['id'],
-        people_inside = location['people_inside']
+        # people_inside = location['people_inside']
     )
 
 @bp.route('/all', methods=['GET'])
@@ -95,7 +95,7 @@ def get_location(id, check_author=True):
     user_id = get_jwt_identity()
 
     location = get_db().execute(
-        'SELECT p.id, name, maximum_capacity, author_id, people_inside'
+        'SELECT p.id, name, maximum_capacity, author_id'
         ' FROM location p JOIN user u ON p.author_id = u.id'
         ' WHERE p.id = ?',
         (id,)
