@@ -2,6 +2,7 @@ import pytest
 
 from flask import g, session
 from yeabackend.db import get_db
+from conftest import get_access_headers
 
 
 def test_register(client, app):
@@ -35,12 +36,7 @@ def test_login(client, auth):
         'username': 'usertest', 'password': 'usertest'
     }).status_code == 200
     response = auth.login()
-    #assert response.headers['Location'] == 'http://localhost/'
-
-    #with client:
-     #   client.get('/')
-     #   assert session['user_id'] == 1
-      #  assert g.user['username'] == 'test'
+    assert 'access_token' in response.get_json()
 
 @pytest.mark.parametrize(('username', 'password', 'message'), (
     ('a', 'usertest', 'Incorrect username.'),
@@ -52,9 +48,13 @@ def test_login_validate_input(auth, username, password, message):
     assert message == json_data['error']
     assert 'Authentication failed.' == json_data['message']
 
-def test_logout(client, auth):
-    auth.login()
+def test_cannot_logout_missing_headers(client, auth):
+    response = auth.logout(None)
+    assert response.status_code == 401
+    assert response.get_json() == {'msg': "Missing Authorization Header"}
 
-    with client:
-        auth.logout()
-        assert 'user_id' not in session
+def test_logout(client, auth):
+    access_headers = get_access_headers(auth.login())
+
+    response = auth.logout(access_headers)
+    assert response.status_code == 200

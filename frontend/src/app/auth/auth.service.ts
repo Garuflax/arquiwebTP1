@@ -46,7 +46,7 @@ export class AuthService {
     /** logout from the server */
     logout(): Observable<LogOutResponse> {
         const url = `${this.authUrl}/logout`;
-        return this.http.get<LogOutResponse>(url)
+        return this.http.delete<LogOutResponse>(url)
         .pipe(
             catchError(this.handleError<LogOutResponse>('logout'))
             );
