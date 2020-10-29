@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-locations',
-  templateUrl: './locations.component.html',
-  styleUrls: ['./locations.component.css']
+  templateUrl: './location-all.component.html',
+  styleUrls: ['./location-all.component.css']
 })
 export class LocationsComponent implements OnInit {
 

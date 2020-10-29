@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { LocationsService } from './locations.service';
+import { LocationsService } from './../location-all/location-all.service';
 
 
 @Component({
