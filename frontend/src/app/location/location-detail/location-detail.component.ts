@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { saveAs } from 'file-saver';
 import { LocationsService } from './../location-all/location-all.service';
-
+import { LocationDetailService } from './location-detail.service'
 
 @Component({
   selector: 'app-location-detail',
@@ -18,6 +19,7 @@ export class LocationDetailComponent implements OnInit {
 
   constructor(
     private locationsService: LocationsService,
+    private LocationDetailService: LocationDetailService,
     private router: Router,
     private route: ActivatedRoute,
   ){}
@@ -36,8 +38,13 @@ export class LocationDetailComponent implements OnInit {
   }
 
   onDownloadQr() {
-    // this.checkService.get_qr(this.location_id)
-    // .subscribe()
+    console.log("ANTES DE LLAMAR AL SERVICIO")
+    this.LocationDetailService.get_qr(this.location_id).subscribe(
+      data => {
+        saveAs(data, `qr.png`)
+      }
+    )
+    console.log("DESPUES DE LLAMAR AL SERVICIO")
   }
 
 }

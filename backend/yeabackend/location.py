@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, jsonify
+    Blueprint, flash, g, redirect, render_template, request, url_for, send_file, jsonify
 )
 from flask_jwt_extended import (
     create_access_token, create_refresh_token, get_jwt_identity,
@@ -7,9 +7,12 @@ from flask_jwt_extended import (
     jwt_required
 )
 
+from flask_qrcode import QRcode
+
 from werkzeug.exceptions import abort
 
 #from yeabackend.auth import login_required
+
 from yeabackend.db import get_db
 
 bp = Blueprint('location', __name__, url_prefix='/location')
@@ -90,6 +93,28 @@ def all():
 
     return jsonify(locations=locations)
 
+def user_is_owner(location_id):
+
+    user_id = get_jwt_identity()
+
+    location = get_db().execute(
+        'SELECT p.id, name, maximum_capacity, author_id'
+        ' FROM location p JOIN user u ON p.author_id = u.id'
+        ' WHERE p.id = ?',
+        (location_id,)
+    ).fetchone()
+
+    return location['author_id'] == user_id
+
+
+
+
+@bp.route("/<int:id>/qrcode", methods=["GET"])
+@jwt_required
+def get_qrcode(id):
+    if user_is_owner(id):
+        return send_file(QRcode.qrcode(id, mode="raw"), mimetype="image/png")
+
 def get_location(id, check_author=True):
 
     user_id = get_jwt_identity()
@@ -127,3 +152,4 @@ def get_fields(json_data):
         abort(400, 'Maximum capacity is required.')
 
     return (name, maximum_capacity)
+
