@@ -6,8 +6,8 @@ from flask import (
 )
 
 from flask_jwt_extended import (
-    create_access_token, create_refresh_token, get_jwt_identity,
-    verify_jwt_in_request, verify_jwt_refresh_token_in_request
+    create_access_token, get_jwt_identity,
+    verify_jwt_in_request, jwt_required
 )
 
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -69,41 +69,21 @@ def login():
         error = 'Incorrect password.'
 
     if error is None:
-        #session.clear()
-        #session['user_id'] = user['id']
         access_token = create_access_token(identity=user['id'],expires_delta=False)
-        refresh_token = create_refresh_token(identity=user['id'])
+        #refresh_token = create_refresh_token(identity=user['id'])
         return jsonify(
             message='Authenticated succesfully.',
             is_admin=user['is_admin'],
-            accessToken=access_token,
-            refreshToken=refresh_token)
+            access_token=access_token
+            )
 
     return jsonify(
             message='Authentication failed.',
             error=error), 401
 
-@bp.route('/logout', methods=['POST'])
+@bp.route('/logout', methods=['DELETE'])
+@jwt_required
 def logout():
-    #session.clear()#TODO check if it logged in
+    #TODO Eliminar token
     return jsonify(
             message='Logged out succesfully.')
-
-
-# @bp.before_app_request
-# def load_logged_in_user():
-
-#     #user_id = session.get('user_id')
-    
-#     if user_id is None:
-#         g.user = None
-#     else:
-#         g.user = get_db().execute(
-#             'SELECT * FROM user WHERE id = ?', (user_id,)
-#         ).fetchone()
-
-def login_required():
-    
-    if g.user is None:
-        abort(401, 'It is required to be logged in.')
-    

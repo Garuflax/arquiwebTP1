@@ -3,7 +3,7 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from yeabackend.auth import login_required
+
 from yeabackend.db import get_db
 
 from yeabackend.location import bp as location_bp

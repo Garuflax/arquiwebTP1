@@ -8,6 +8,10 @@ from yeabackend.db import get_db, init_db
 with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
     _data_sql = f.read().decode('utf8')
 
+def get_access_headers(login_response):
+    access_token = login_response.get_json()['access_token']
+    return {'Authorization': 'Bearer {}'.format(access_token)}
+
 class AuthActions(object):
     def __init__(self, client):
         self._client = client
@@ -18,8 +22,8 @@ class AuthActions(object):
             json={'username': username, 'password': password}
         )
 
-    def logout(self):
-        return self._client.post('/auth/logout')
+    def logout(self, access_headers):
+        return self._client.delete('/auth/logout', headers=access_headers)
 
 @pytest.fixture
 def app():

@@ -38,7 +38,7 @@ export class MenuComponent implements OnInit {
     login(userData) {
         this.authService.login(userData)
         .subscribe(response => {
-            localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('accessToken', response.access_token);
 
             if(response.is_admin){
                 this.router.navigate(['/admin']);
