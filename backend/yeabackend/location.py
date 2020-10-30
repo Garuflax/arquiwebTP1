@@ -67,9 +67,9 @@ def location(id):
     location = get_location(id, False)
     return jsonify(name=location['name'],
         maximum_capacity=location['maximum_capacity'],
+        people_inside = location['people_inside'],
         author_id=location['author_id'],
         id=location['id'],
-        # people_inside = location['people_inside']
     )
 
 @bp.route('/all', methods=['GET'])
@@ -86,6 +86,7 @@ def all():
         locations.append(dict(
             name=row['name'],
             maximum_capacity=row['maximum_capacity'],
+            people_inside = row['people_inside'],
             author_id=row['author_id'],
             id=row['id']
         ))
@@ -107,8 +108,6 @@ def user_is_owner(location_id):
     return location['author_id'] == user_id
 
 
-
-
 @bp.route("/<int:id>/qrcode", methods=["GET"])
 @jwt_required
 def get_qrcode(id):
@@ -120,7 +119,7 @@ def get_location(id, check_author=True):
     user_id = get_jwt_identity()
 
     location = get_db().execute(
-        'SELECT p.id, name, maximum_capacity, author_id'
+        'SELECT p.id, name, maximum_capacity, author_id, people_inside'
         ' FROM location p JOIN user u ON p.author_id = u.id'
         ' WHERE p.id = ?',
         (id,)
