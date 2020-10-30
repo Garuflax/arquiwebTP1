@@ -13,5 +13,6 @@ CREATE TABLE location (
   author_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   maximum_capacity INTEGER NOT NULL,
+  people_inside INTEGER DEFAULT 0,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
