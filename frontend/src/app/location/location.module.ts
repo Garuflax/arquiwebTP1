@@ -16,7 +16,8 @@ import { LocationDetailComponent } from './location-detail/location-detail.compo
     AgmCoreModule.forRoot({
       apiKey: ''
     })
-  ]
+  ],
+  exports: [LocationsComponent, LocationDetailComponent]
 })
 export class LocationModule { }
 
