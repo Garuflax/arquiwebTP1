@@ -11,6 +11,7 @@ export class CheckService {
 
   private checkinUrl = 'http://127.0.0.1:5000/checkin';
   private checkoutUrl = 'http://127.0.0.1:5000/checkout';
+  
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

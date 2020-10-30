@@ -33,10 +33,10 @@ export class CheckComponent implements OnInit {
       .subscribe( 
         () => this.router.navigate(['/locations', Number(result)])
     )
-    // Si el usuario ya hizo checkin, hace checkout. Vuelve a index
-    this.checkService.checkin(this.qrResult)
+    // Si el usuario ya hizo checkin, hace checkout. Vuelve a user
+    this.checkService.checkout(this.qrResult)
       .subscribe( 
-        () => this.router.navigate(['/locations', Number(result)])
+        () => this.router.navigate(['/user'])
     )
       }
 
