@@ -6,7 +6,7 @@ import { LocationsComponent } from './location-all/location-all.component';
 
 const routes: Routes = [
     { path: 'all', component: LocationsComponent },
-    { path: ':id', component: LocationDetailComponent },
+    { path: 'detail/:id', component: LocationDetailComponent },
 ];
 
 @NgModule({

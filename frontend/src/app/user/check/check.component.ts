@@ -31,7 +31,7 @@ export class CheckComponent implements OnInit {
     // Si el usuario aún no hizo checkin
     this.checkService.checkin(this.qrResult)
       .subscribe( 
-        () => this.router.navigate(['/locations', Number(result)])
+        () => this.router.navigate(['/locations/detail', Number(result)])
     )
     // Si el usuario ya hizo checkin, hace checkout. Vuelve a user
     this.checkService.checkout(this.qrResult)
