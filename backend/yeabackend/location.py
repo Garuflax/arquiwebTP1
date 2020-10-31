@@ -11,8 +11,6 @@ from flask_qrcode import QRcode
 
 from werkzeug.exceptions import abort
 
-#from yeabackend.auth import login_required
-
 from yeabackend.db import get_db
 
 bp = Blueprint('location', __name__, url_prefix='/location')
@@ -22,15 +20,14 @@ bp = Blueprint('location', __name__, url_prefix='/location')
 def create():
 
     user_id = get_jwt_identity()
-    #login_required()
 
-    (name, maximum_capacity) = get_fields(request.get_json())
+    (name, maximum_capacity, latitude, longitude) = get_fields(request.get_json())
 
     db = get_db()
     db.execute(
-        'INSERT INTO location (name, maximum_capacity, author_id)'
-        ' VALUES (?, ?, ?)',
-        (name, maximum_capacity, user_id)
+        'INSERT INTO location (name, maximum_capacity, latitude, longitude, author_id)'
+        ' VALUES (?, ?, ?, ?, ?)',
+        (name, maximum_capacity, latitude, longitude, user_id)
     )
     db.commit()
     return jsonify(created=True,
@@ -39,18 +36,16 @@ def create():
 @bp.route('/<int:id>', methods=['GET','PUT','DELETE'])
 @jwt_required
 def location(id):
-    
-    #login_required()
 
     if request.method == 'PUT':
         get_location(id)
-        (name, maximum_capacity) = get_fields(request.get_json())
+        (name, maximum_capacity, latitude, longitude) = get_fields(request.get_json())
         
         db = get_db()
         db.execute(
-            'UPDATE location SET name = ?, maximum_capacity = ?'
+            'UPDATE location SET name = ?, maximum_capacity = ?, latitude = ?, longitude = ?'
             ' WHERE id = ?',
-            (name, maximum_capacity, id)
+            (name, maximum_capacity, latitude, longitude, id)
         )
         db.commit()
 
@@ -68,6 +63,8 @@ def location(id):
     return jsonify(name=location['name'],
         maximum_capacity=location['maximum_capacity'],
         people_inside = location['people_inside'],
+        latitude = location['latitude'],
+        longitude = location['longitude'],
         author_id=location['author_id'],
         id=location['id'],
     )
@@ -75,8 +72,6 @@ def location(id):
 @bp.route('/all', methods=['GET'])
 @jwt_required
 def all():
-    
-    #login_required()
 
     locations = []
     c = get_db().cursor()
@@ -87,6 +82,8 @@ def all():
             name=row['name'],
             maximum_capacity=row['maximum_capacity'],
             people_inside = row['people_inside'],
+            latitude = row['latitude'],
+            longitude = row['longitude'],
             author_id=row['author_id'],
             id=row['id']
         ))
@@ -119,7 +116,7 @@ def get_location(id, check_author=True):
     user_id = get_jwt_identity()
 
     location = get_db().execute(
-        'SELECT p.id, name, maximum_capacity, author_id, people_inside'
+        'SELECT p.id, name, maximum_capacity, author_id, people_inside, latitude, longitude'
         ' FROM location p JOIN user u ON p.author_id = u.id'
         ' WHERE p.id = ?',
         (id,)
@@ -135,7 +132,7 @@ def get_location(id, check_author=True):
 
 def get_fields(json_data):
 
-    fields = ['name', 'maximum_capacity']
+    fields = ['name', 'maximum_capacity', 'latitude', 'longitude']
 
     for field in fields:
         if field not in json_data:
@@ -143,6 +140,8 @@ def get_fields(json_data):
 
     name = json_data['name']
     maximum_capacity = json_data['maximum_capacity']
+    latitude = json_data['latitude']
+    longitude = json_data['longitude']
 
     if not name:
         abort(400, 'Name is required.')
@@ -150,5 +149,11 @@ def get_fields(json_data):
     if not maximum_capacity:
         abort(400, 'Maximum capacity is required.')
 
-    return (name, maximum_capacity)
+    if not latitude:
+        abort(400, 'Latitude is required.')
+
+    if not longitude:
+        abort(400, 'Longitude is required.')
+
+    return (name, maximum_capacity, latitude, longitude)
 
