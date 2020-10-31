@@ -1,0 +1,35 @@
+<p>location-manager works!</p>
+
+<form [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)">
+
+    <div>
+        <label for="name">
+          Name
+      </label>
+      <input type="text" formControlName="name">
+  </div>
+
+  <div>
+    <label for="maximum_capacity">
+      Capacidad
+  </label>
+  <input type="text" formControlName="maximum_capacity">
+</div>
+
+<div>
+    <label for="latitude">
+      Latitud
+  </label>
+  <input type="text" formControlName="latitude">
+</div>
+
+<div>
+    <label for="longitude">
+      Longitud
+  </label>
+  <input type="text" formControlName="longitude">
+</div>
+
+<button class="button" type="submit">Agregar locación</button>
+
+<a routerLink="/location/all">Ver todas las locaciones</a>
