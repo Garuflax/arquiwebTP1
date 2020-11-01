@@ -45,4 +45,7 @@ def create_app(test_config=None):
     from . import check
     app.register_blueprint(check.bp)
 
+    from . import inform
+    app.register_blueprint(inform.bp)
+
     return app
