@@ -17,7 +17,7 @@ def test_cannot_inform_infection_inside_location(app, client, auth):
         db = get_db()
         is_infected = db.execute('SELECT is_infected FROM user'
             ' WHERE id = 1').fetchone()['is_infected']
-        #assert not is_infected FIXME
+        assert not is_infected
 
 def test_cannot_inform_infection_if_user_already_informed(app, client, auth):
     access_headers = get_access_headers(auth.login())
