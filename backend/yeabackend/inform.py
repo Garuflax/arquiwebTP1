@@ -6,6 +6,7 @@ from flask_jwt_extended import (
 )
 
 from werkzeug.exceptions import abort
+from datetime import datetime
 
 from yeabackend.db import get_db
 
@@ -37,11 +38,39 @@ def infection():
     )
     db.commit()
 
-    # Obtener locaciones donde estuvo la persona
+    users_in_risk = {}
+    c = db.cursor()
+    c.execute('SELECT * FROM checks'
+        ' WHERE author_id = ?',
+        (user_id,)
+    )
 
-    # Obtener personas que hayan estado ahí en el tiempo
+    for row_c in c:
+        d = db.cursor()
+        d.execute('SELECT * FROM checks'
+            'WHERE NOT author_id = ? AND location_id = ?',
+            (user_id, row_c['location_id'])
+        )
+        
+        for row_d in d:
+            if were_together(row_c['check_in_time'], row_c['check_out_time'], row_d['check_in_time'], row_d['check_out_time']):
+                row_d['author_id']
+                in_risk_since = min(row_c['check_out_time'], row_d['check_out_time'])
+                if row_d['author_id'] not in users_in_risk.keys():
+                    users_in_risk[row_d['author_id']] = in_risk_since
+                else:
+                    users_in_risk[row_d['author_id']] = max(in_risk_since, users_in_risk[row_d['author_id']])
 
-    # Poner a esas personas en estado de riesgo e informar via mail
+    for user_in_risk_id, in_risk_since in users_in_risk.items():
+        db.execute(
+            'UPDATE user SET being_in_risk_since = ?'
+            ' WHERE id = ? AND (being_in_risk_since IS NULL OR being_in_risk_since < ?)',
+            (in_risk_since, user_in_risk_id, in_risk_since)
+        )
+        db.commit()
+        # TODO Informar via mail
+        # FIXME se puede estar infectado y en riesgo. ¿Queremos eso?
+
     return jsonify(message='Infection reported succesfully'), 200
 
 @bp.route('/discharge', methods=['POST'])
@@ -77,3 +106,10 @@ def get_user_data(user_id, db):
         (user_id,)
     ).fetchone()
 
+def were_together(user1_check_in, user1_check_out, user2_check_in, user2_check_out):
+    actual_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    if not user1_check_out:
+        user1_check_out = actual_datetime
+    if not user2_check_out:
+        user2_check_out = actual_datetime
+    return user1_check_in <= user2_check_out and user2_check_in <= user1_check_out
