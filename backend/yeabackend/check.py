@@ -37,7 +37,7 @@ def checkin():
     db = get_db()
     location_data = db.execute(
         "SELECT * FROM location WHERE id = ?",
-        location_id).fetchone()
+        (location_id,)).fetchone()
     
     user_data = db.execute(
         "SELECT * FROM user WHERE id = ?",
