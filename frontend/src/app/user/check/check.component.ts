@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CheckService } from './check.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-check',
@@ -11,6 +12,7 @@ export class CheckComponent implements OnInit {
 
   currentDevice: MediaDeviceInfo = null;
   tryHarder = false;
+  has_to_checkin;
 
   qrResult: string;
 
@@ -20,24 +22,33 @@ export class CheckComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    // ver si el usuario hizo checkin
-  }
 
-  // QR scanner stuff
+    this.checkService.currentLocation()
+      .subscribe( 
+        (location) => {
+          this.has_to_checkin = location["current_location"] == null
+        }
+    )
+  }
 
   onCodeResult(result: string) {
 
     this.qrResult = result
-    // Si el usuario aún no hizo checkin
-    this.checkService.checkin(this.qrResult)
+
+    // Si el usuario no hizo checkin, hace checkin. Va a location/detail/resultQR
+    if (this.has_to_checkin){
+      this.checkService.checkin(this.qrResult)
       .subscribe( 
-        () => this.router.navigate(['/locations/detail', Number(result)])
+        () => this.router.navigate(['/location/detail', Number(result)])
     )
+    }
     // Si el usuario ya hizo checkin, hace checkout. Vuelve a user
-    this.checkService.checkout(this.qrResult)
+    else{
+      this.checkService.checkout(this.qrResult)
       .subscribe( 
         () => this.router.navigate(['/user'])
     )
+    }
       }
 
   // Ver si lo puedo quitar

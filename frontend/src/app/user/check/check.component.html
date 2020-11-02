@@ -1,6 +1,7 @@
-<h1>CHECK</h1>
-<p>Please scan the location's QR code </p>
+<h1 *ngIf="has_to_checkin; else elseBlock">CHECKIN</h1>
+<h1 #elseBlock>CHECKOUT</h1>
 
+<p>Please scan the location's QR code </p>
 <zxing-scanner [(device)]="currentDevice" 
     (scanSuccess)="onCodeResult($event)"
     [tryHarder]="tryHarder">
