@@ -11,7 +11,7 @@ export class CheckService {
 
   private checkinUrl = 'http://127.0.0.1:5000/checkin';
   private checkoutUrl = 'http://127.0.0.1:5000/checkout';
-  
+  private currentLocationUrl = 'http://127.0.0.1:5000/current_location'
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,6 +22,11 @@ export class CheckService {
   /** POST checkin to the server */
   checkin(qr_result) {
     return this.http.post(this.checkinUrl, {location_id:qr_result}, this.httpOptions)
+}
+
+  /** POST checkin to the server */
+  currentLocation() {
+    return this.http.get(this.currentLocationUrl, this.httpOptions)
 }
 
   /** POST checkout to the server */

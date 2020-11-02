@@ -11,6 +11,7 @@ export class CheckComponent implements OnInit {
 
   currentDevice: MediaDeviceInfo = null;
   tryHarder = false;
+  has_to_checkin;
 
   qrResult: string;
 
@@ -20,24 +21,28 @@ export class CheckComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    // ver si el usuario hizo checkin
+    this.has_to_checkin = this.router.url == "/user/checkin";
   }
 
-  // QR scanner stuff
 
   onCodeResult(result: string) {
 
     this.qrResult = result
-    // Si el usuario aún no hizo checkin
-    this.checkService.checkin(this.qrResult)
+
+    // Si el usuario no hizo checkin, hace checkin. Va a location/detail/resultQR
+    if (this.has_to_checkin){
+      this.checkService.checkin(this.qrResult)
       .subscribe( 
-        () => this.router.navigate(['/locations/detail', Number(result)])
+        () => this.router.navigate(['/location/detail', Number(result)])
     )
+    }
     // Si el usuario ya hizo checkin, hace checkout. Vuelve a user
-    this.checkService.checkout(this.qrResult)
+    else{
+      this.checkService.checkout(this.qrResult)
       .subscribe( 
         () => this.router.navigate(['/user'])
     )
+    }
       }
 
   // Ver si lo puedo quitar

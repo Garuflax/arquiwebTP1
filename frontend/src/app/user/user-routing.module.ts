@@ -9,7 +9,8 @@ const routes: Routes = [
     { path: '', component: UserComponent },
     { path: 'manage', component: LocationManagerComponent },
     { path: 'checkin', component: CheckComponent },
-    { path: 'checkout', component: CheckComponent }
+    { path: 'checkout', component: CheckComponent },
+
 
 ];
 
