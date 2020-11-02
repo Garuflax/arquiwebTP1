@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CheckService } from './../check/check.service'
 
 @Component({
   selector: 'app-user',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
-  constructor() { }
+  has_to_checkin;
+  a;
+
+  constructor(private checkService: CheckService) { }
 
   ngOnInit(): void {
+    this.checkService.currentLocation()
+      .subscribe( 
+        (location) => {
+          this.has_to_checkin = location["current_location"] == null;
+        }
+    )
   }
 
   inform(): void {

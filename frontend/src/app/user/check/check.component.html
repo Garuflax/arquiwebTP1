@@ -1,6 +1,6 @@
-<h1 *ngIf="has_to_checkin; else elseBlock">CHECKIN</h1>
-<h1 #elseBlock>CHECKOUT</h1>
-
+<h1 *ngIf="has_to_checkin; then thenBlock else elseBlock"></h1>
+<ng-template #thenBlock> CHECKIN </ng-template>
+<ng-template #elseBlock> CHECKOUT </ng-template>
 <p>Please scan the location's QR code </p>
 <zxing-scanner [(device)]="currentDevice" 
     (scanSuccess)="onCodeResult($event)"

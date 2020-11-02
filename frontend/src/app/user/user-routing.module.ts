@@ -8,7 +8,9 @@ import { CheckComponent } from './check/check.component';
 const routes: Routes = [
     { path: '', component: UserComponent },
     { path: 'manage', component: LocationManagerComponent },
-    { path: 'check', component: CheckComponent },
+    { path: 'checkin', component: CheckComponent },
+    { path: 'checkout', component: CheckComponent },
+
 
 ];
 

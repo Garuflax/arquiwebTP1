@@ -2,9 +2,11 @@
 <nav>
   <a routerLink="manage/"> Manejar locaciones </a>
 </nav>
-<nav>
-  <a routerLink="check/"> Scan QR </a>
-</nav>
+
+<nav *ngIf="has_to_checkin; then thenBlock else elseBlock"></nav>
+<ng-template #thenBlock>  <a routerLink="checkin/"> Checkin </a> </ng-template>
+<ng-template #elseBlock>  <a routerLink="checkout/"> Checkout </a> </ng-template>
+
 <div>
    <button (click)="inform()">Informar contagio/alta</button>
 </div>

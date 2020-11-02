@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CheckService } from './check.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { isNull } from 'util';
 
 @Component({
   selector: 'app-check',
@@ -22,14 +21,9 @@ export class CheckComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-
-    this.checkService.currentLocation()
-      .subscribe( 
-        (location) => {
-          this.has_to_checkin = location["current_location"] == null
-        }
-    )
+    this.has_to_checkin = this.router.url == "/user/checkin";
   }
+
 
   onCodeResult(result: string) {
 
