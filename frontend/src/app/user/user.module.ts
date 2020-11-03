@@ -8,10 +8,11 @@ import { CheckComponent } from './check/check.component';
 
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { LocationManagerComponent } from './location-manager/location-manager.component';
+import { AlertComponent } from './alert/alert.component';
 
 
 @NgModule({
-  declarations: [UserComponent, CheckComponent, LocationManagerComponent],
+  declarations: [UserComponent, CheckComponent, LocationManagerComponent, AlertComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
