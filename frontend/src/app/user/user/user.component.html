@@ -3,10 +3,14 @@
   <a routerLink="manage/"> Manejar locaciones </a>
 </nav>
 
-<nav *ngIf="has_to_checkin; then thenBlock else elseBlock"></nav>
-<ng-template #thenBlock>  <a routerLink="checkin/"> Checkin </a> </ng-template>
-<ng-template #elseBlock>  <a routerLink="checkout/"> Checkout </a> </ng-template>
+<nav *ngIf="has_to_checkin; then thenCheckBlock else elseCheckBlock"></nav>
+<ng-template #thenCheckBlock>  <a routerLink="checkin/"> Checkin </a> </ng-template>
+<ng-template #elseCheckBlock>  <a routerLink="checkout/"> Checkout </a> </ng-template>
 
-<div>
-   <button (click)="inform()">Informar contagio/alta</button>
+<div *ngIf="!is_infected">
+    <button (click)="informInfection()">Informar contagio</button>
+</div>
+
+<div *ngIf="is_infected">
+    <button (click)="informDischarge()">Informar alta</button>
 </div>

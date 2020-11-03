@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CheckService } from './../check/check.service'
+import { GetStatusService } from '../get-status.service'
+import { InformService } from '../inform.service'
 
 @Component({
   selector: 'app-user',
@@ -9,21 +10,28 @@ import { CheckService } from './../check/check.service'
 export class UserComponent implements OnInit {
 
   has_to_checkin;
-  a;
+  is_infected;
 
-  constructor(private checkService: CheckService) { }
+  constructor(private getStatusService: GetStatusService,
+    private informService: InformService
+    ) { }
 
   ngOnInit(): void {
-    this.checkService.currentLocation()
+    this.getStatusService.getStatus()
       .subscribe( 
-        (location) => {
-          this.has_to_checkin = location["current_location"] == null;
+        (response) => {
+          this.has_to_checkin = response["current_location"] == null;
+          this.is_infected = response["is_infected"];
         }
     )
   }
 
-  inform(): void {
-      //TODO: send to the server the change of state that applies
+  informInfection(): void {
+      this.informService.infection({date: 1}).subscribe(response => this.is_infected = true); // TODO: get date
+  }
+
+  informDischarge(): void {
+      this.informService.discharge({date: 1}).subscribe(response => this.is_infected = false); // TODO: get date
   }
 
 }
