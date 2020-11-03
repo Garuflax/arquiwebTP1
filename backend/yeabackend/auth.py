@@ -73,7 +73,6 @@ def login():
         #refresh_token = create_refresh_token(identity=user['id'])
         return jsonify(
             message='Authenticated succesfully.',
-            is_admin=user['is_admin'],
             access_token=access_token
             )
 
