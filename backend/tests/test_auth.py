@@ -6,11 +6,11 @@ from conftest import get_access_headers
 
 
 def test_register(client, app):
-    #assert client.get('/auth/register').status_code == 200
+    
     response = client.post(
         '/auth/register', json={'username': 'a', 'password': 'a', 'email': 'a@test.com'}
     )
-    #assert 'http://localhost/auth/login' == response.headers['Location']
+    assert response.status_code == 201
 
     with app.app_context():
         assert get_db().execute(

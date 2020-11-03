@@ -74,7 +74,7 @@ def checkout():
     user_id = get_jwt_identity()
     location_id = request.get_json()["location_id"]
     
-    db.execute("UPDATE location SET people_inside = people_inside -1 WHERE id = ?", location_id)
+    db.execute("UPDATE location SET people_inside = people_inside -1 WHERE id = ?", (location_id,))
     db.execute("UPDATE user SET current_location = NULL WHERE id = ?", (user_id,))
     
     db.commit()
