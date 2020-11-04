@@ -1,6 +1,8 @@
 import pytest
-from datetime import date
+from datetime import (date, datetime)
+from time import sleep
 from yeabackend.db import get_db
+from yeabackend.inform import string_to_datetime
 from conftest import get_access_headers
 
 
@@ -91,3 +93,44 @@ def test_user_is_in_risk_if_shares_space_with_infected(app, client, auth):
         being_in_risk_since = db.execute('SELECT being_in_risk_since FROM user'
             ' WHERE id = 3').fetchone()['being_in_risk_since']
         assert being_in_risk_since is not None
+
+def test_user_is_not_in_risk_if_does_not_share_space_with_infected(app, client, auth):
+    # enter location with another user
+    access_headers_other = get_access_headers(
+        client.post('/auth/login', json={
+            'username': 'othertest', 'password': 'othertest'
+        }))
+    client.post('/checkin', headers=access_headers_other, json={'location_id': 1})
+    client.post('/checkout', headers=access_headers_other, json={'location_id': 1})
+    sleep(1.0)
+    access_headers = get_access_headers(auth.login())
+    client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    client.post('/checkout', headers=access_headers, json={'location_id': 1})
+    client.post('/inform/infection', headers=access_headers, json={'date': date.today()})
+    with app.app_context():
+        db = get_db()
+        being_in_risk_since = db.execute('SELECT being_in_risk_since FROM user'
+            ' WHERE id = 3').fetchone()['being_in_risk_since']
+        assert being_in_risk_since is None
+
+def test_user_gets_risk_from_most_recent_contact_with_infected(app, client, auth):
+    # enter location with another user
+    access_headers = get_access_headers(auth.login())
+    client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    access_headers_other = get_access_headers(
+        client.post('/auth/login', json={
+            'username': 'othertest', 'password': 'othertest'
+        }))
+    client.post('/checkin', headers=access_headers_other, json={'location_id': 1})
+    client.post('/checkout', headers=access_headers_other, json={'location_id': 1})
+    before = datetime.now()
+    sleep(1.0)
+    client.post('/checkin', headers=access_headers_other, json={'location_id': 1})
+    client.post('/checkout', headers=access_headers_other, json={'location_id': 1})
+    client.post('/checkout', headers=access_headers, json={'location_id': 1})
+    client.post('/inform/infection', headers=access_headers, json={'date': date.today()})
+    with app.app_context():
+        db = get_db()
+        being_in_risk_since = db.execute('SELECT being_in_risk_since FROM user'
+            ' WHERE id = 3').fetchone()['being_in_risk_since']
+        assert string_to_datetime(being_in_risk_since) > before

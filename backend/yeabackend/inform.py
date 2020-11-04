@@ -52,17 +52,21 @@ def infection():
             (user_id, row_c['location_id'])
         )
         
+        c_check_in_time = string_to_datetime(row_c['check_in_time'])
+        c_check_out_time = string_to_datetime(row_c['check_out_time'])
+
         for row_d in d:
-            if were_together(row_c['check_in_time'], row_c['check_out_time'], row_d['check_in_time'], row_d['check_out_time']):
-                
-                if row_d['check_out_time'] is None:
-                    users_in_risk[row_d['author_id']] = row_c['check_out_time']
-                else: 
-                    in_risk_since = min(row_c['check_out_time'], row_d['check_out_time'])
-                    if row_d['author_id'] not in users_in_risk.keys():
-                        users_in_risk[row_d['author_id']] = in_risk_since
-                    else:
-                        users_in_risk[row_d['author_id']] = max(in_risk_since, users_in_risk[row_d['author_id']])
+            d_check_in_time = string_to_datetime(row_d['check_in_time'])
+            if row_d['check_out_time'] is None:
+                d_check_out_time = datetime.now()
+            else:
+                d_check_out_time = string_to_datetime(row_d['check_out_time'])
+            if were_together(c_check_in_time, c_check_out_time, d_check_in_time, d_check_out_time):
+                in_risk_since = min(c_check_out_time, d_check_out_time)
+                if row_d['author_id'] not in users_in_risk.keys():
+                    users_in_risk[row_d['author_id']] = in_risk_since
+                else:
+                    users_in_risk[row_d['author_id']] = max(in_risk_since, users_in_risk[row_d['author_id']])
 
     for user_in_risk_id, in_risk_since in users_in_risk.items():
         db.execute(
@@ -110,9 +114,7 @@ def get_user_data(user_id, db):
     ).fetchone()
 
 def were_together(user1_check_in, user1_check_out, user2_check_in, user2_check_out):
-    actual_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    if not user1_check_out:
-        user1_check_out = actual_datetime
-    if not user2_check_out:
-        user2_check_out = actual_datetime
     return user1_check_in <= user2_check_out and user2_check_in <= user1_check_out
+
+def string_to_datetime(ts):
+    return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
