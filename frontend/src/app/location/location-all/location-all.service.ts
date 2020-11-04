@@ -8,6 +8,7 @@ import { catchError, retry } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
+
 export class LocationsService {
 
   httpOptions = {
@@ -20,4 +21,9 @@ export class LocationsService {
   get_location(id : Number) {
     return this.http.get(`http://127.0.0.1:5000/location/${id}`)
   }
+
+  get_locations() {
+    return this.http.get("http://127.0.0.1:5000/location/all")
+  }
+
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AgmCoreModule } from '@agm/core';
-
+import { LocationsService } from './location-all.service'
 
 @Component({
   selector: 'app-locations',
@@ -9,12 +9,19 @@ import { AgmCoreModule } from '@agm/core';
 })
 export class LocationsComponent implements OnInit {
 
-  lat: number = 51.678418;
-  lng: number = 7.809007;
+  lat: number = 30.678418;
+  lng: number = 60.809007;
+  locations;
 
-  constructor() { }
+  constructor(private locationsService: LocationsService) { }
 
   ngOnInit(): void {
+    this.locationsService.get_locations()
+      .subscribe( 
+        (data) => {
+          this.locations = data["locations"];
+        }
+    )
   }
 
 }

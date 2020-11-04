@@ -6,4 +6,10 @@ VALUES
 
 INSERT INTO location (name, maximum_capacity, author_id, latitude, longitude)
 VALUES
-  ('test location', 10, 1, 100.0, 50.0);
+  ('test location 1', 10, 1, 31.0, 61.0),
+  ('test location 2', 10, 1, 32.0, 66.0),
+  ('test location 3', 10, 1, 33.0, 65.0),
+  ('test location 4', 10, 1, 34.0, 64.0),
+  ('test location 5', 10, 1, 35.0, 63.0),
+  ('test location 6', 10, 1, 36.0, 62.0),
+  ('test location 7', 10, 1, 37.0, 61.0);
