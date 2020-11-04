@@ -48,18 +48,21 @@ def infection():
     for row_c in c:
         d = db.cursor()
         d.execute('SELECT * FROM checks'
-            'WHERE NOT author_id = ? AND location_id = ?',
+            ' WHERE NOT author_id = ? AND location_id = ?',
             (user_id, row_c['location_id'])
         )
         
         for row_d in d:
             if were_together(row_c['check_in_time'], row_c['check_out_time'], row_d['check_in_time'], row_d['check_out_time']):
-                row_d['author_id']
-                in_risk_since = min(row_c['check_out_time'], row_d['check_out_time'])
-                if row_d['author_id'] not in users_in_risk.keys():
-                    users_in_risk[row_d['author_id']] = in_risk_since
-                else:
-                    users_in_risk[row_d['author_id']] = max(in_risk_since, users_in_risk[row_d['author_id']])
+                
+                if row_d['check_out_time'] is None:
+                    users_in_risk[row_d['author_id']] = row_c['check_out_time']
+                else: 
+                    in_risk_since = min(row_c['check_out_time'], row_d['check_out_time'])
+                    if row_d['author_id'] not in users_in_risk.keys():
+                        users_in_risk[row_d['author_id']] = in_risk_since
+                    else:
+                        users_in_risk[row_d['author_id']] = max(in_risk_since, users_in_risk[row_d['author_id']])
 
     for user_in_risk_id, in_risk_since in users_in_risk.items():
         db.execute(

@@ -9,7 +9,7 @@ from flask_jwt_extended import (
 )
 
 from werkzeug.exceptions import abort
-
+from datetime import datetime
 
 from yeabackend.db import get_db
 
@@ -49,9 +49,11 @@ def checkin():
     if user_data["is_infected"]:
         abort(404, "Cannot enter, you are infected.")
 
+    # TODO dejar entrar a gente en riesgo pero informarle que está en riesgo
     if user_data["being_in_risk_since"]:
         abort(404, "Cannot enter, you are maybe infected.")
 
+    # TODO check space limit
     db.execute(
         f"UPDATE location SET people_inside = people_inside + 1 WHERE id = {location_id}"
     )
@@ -60,7 +62,11 @@ def checkin():
         f"UPDATE user SET current_location = {location_id}  WHERE id = {user_id}"
     )
 
-    # Guardo en la sesión, el local donde se encuentra la persona
+    db.execute(
+        'INSERT INTO checks (author_id, location_id, check_in_time)'
+        ' VALUES (?, ?, ?)',
+        (user_id, location_id, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    )
 
     db.commit()
 
@@ -76,6 +82,12 @@ def checkout():
     
     db.execute("UPDATE location SET people_inside = people_inside -1 WHERE id = ?", (location_id,))
     db.execute("UPDATE user SET current_location = NULL WHERE id = ?", (user_id,))
+
+    db.execute(
+        'UPDATE checks SET check_out_time = ?'
+        ' WHERE author_id = ? AND check_out_time IS NULL',
+        (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), user_id)
+    )
     
     db.commit()
     return ('')
