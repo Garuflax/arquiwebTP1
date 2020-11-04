@@ -51,4 +51,7 @@ def create_app(test_config=None):
     from . import inform
     app.register_blueprint(inform.bp)
 
+    from . import admin
+    app.register_blueprint(admin.bp)
+
     return app

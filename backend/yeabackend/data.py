@@ -27,3 +27,4 @@ def status():
         being_in_risk_since = user_data["being_in_risk_since"],
         is_admin = user_data["is_admin"]
         ))
+
