@@ -88,16 +88,15 @@ def infection():
     db.commit()
     message_body = "Lamentamos informarle que usted {} está en riego de contagiado."
 
-    with current_app.app_context():
-        mail = Mail()
-        for recipient_data in mailing_data:
-            username = recipient_data["username"]
-            email = recipient_data["email"]
-            msg = Message(
-                    message_body.format(username), 
-                    sender="from@example.com",
-                    recipients=[email],)
-            mail.send(msg)
+    mail = Mail()
+    for recipient_data in mailing_data:
+        username = recipient_data["username"]
+        email = recipient_data["email"]
+        msg = Message(
+                message_body.format(username), 
+                sender="from@example.com",
+                recipients=[email],)
+        mail.send(msg)
     # FIXME se puede estar infectado y en riesgo. ¿Queremos eso?
 
     return jsonify(message='Infection reported succesfully'), 200
