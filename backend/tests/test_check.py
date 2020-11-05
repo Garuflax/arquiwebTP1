@@ -68,6 +68,9 @@ def test_checkin(app, client, auth):
         user_data = db.execute('SELECT * FROM user'
             ' WHERE id = 1').fetchone()
         assert user_data['current_location'] == 1
+        people_inside_location = db.execute('SELECT people_inside FROM location'
+            ' WHERE id = 1').fetchone()['people_inside']
+        assert people_inside_location == 1
         check_data = db.execute('SELECT * FROM checks'
             ' WHERE author_id = 1').fetchone()
         assert check_data['location_id'] == 1
@@ -85,6 +88,9 @@ def test_checkout(app, client, auth):
         user_data = db.execute('SELECT * FROM user'
             ' WHERE id = 1').fetchone()
         assert user_data['current_location'] is None
+        people_inside_location = db.execute('SELECT people_inside FROM location'
+            ' WHERE id = 1').fetchone()['people_inside']
+        assert people_inside_location == 0
         check_data = db.execute('SELECT * FROM checks'
             ' WHERE author_id = 1').fetchone()
         assert check_data['location_id'] == 1
