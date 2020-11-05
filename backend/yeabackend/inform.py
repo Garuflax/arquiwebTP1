@@ -5,6 +5,8 @@ from flask_jwt_extended import (
     get_jwt_identity, jwt_required
 )
 
+from flask_mail import Mail, Message
+
 from werkzeug.exceptions import abort
 from datetime import datetime
 
@@ -67,16 +69,36 @@ def infection():
                     users_in_risk[row_d['author_id']] = in_risk_since
                 else:
                     users_in_risk[row_d['author_id']] = max(in_risk_since, users_in_risk[row_d['author_id']])
-
+    
+    mailing_data = []
     for user_in_risk_id, in_risk_since in users_in_risk.items():
+        mailing_data.append(
+            dict(
+                db.execute(
+                    'SELECT username, email FROM user WHERE id = ? AND (being_in_risk_since IS NULL OR being_in_risk_since < ?)',
+                    (user_in_risk_id, in_risk_since)
+                ).fetchone()
+            )
+        )
         db.execute(
             'UPDATE user SET being_in_risk_since = ?'
             ' WHERE id = ? AND (being_in_risk_since IS NULL OR being_in_risk_since < ?)',
             (in_risk_since, user_in_risk_id, in_risk_since)
         )
-        db.commit()
-        # TODO Informar via mail
-        # FIXME se puede estar infectado y en riesgo. ¿Queremos eso?
+    db.commit()
+    message_body = "Lamentamos informarle que usted {} está en riego de contagiado."
+
+    with current_app.app_context():
+        mail = Mail()
+        for recipient_data in mailing_data:
+            username = recipient_data["username"]
+            email = recipient_data["email"]
+            msg = Message(
+                    message_body.format(username), 
+                    sender="from@example.com",
+                    recipients=[email],)
+            mail.send(msg)
+    # FIXME se puede estar infectado y en riesgo. ¿Queremos eso?
 
     return jsonify(message='Infection reported succesfully'), 200
 

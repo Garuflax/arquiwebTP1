@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail
 
 
 def create_app(test_config=None):
@@ -14,6 +15,16 @@ def create_app(test_config=None):
     )
     CORS(app)
     JWTManager(app)
+
+
+    app.config["MAIL_SERVER"] = "smtp.gmail.com"
+    app.config["MAIL_PORT"] = 465
+    app.config["MAIL_USE_SSL"] = True
+    app.config["MAIL_USERNAME"] = 'yo.estuve.aqui.app@gmail.com'  ## CHANGE THIS
+    app.config["MAIL_PASSWORD"] = 'A.12345678'
+
+    mail = Mail()
+    mail.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
