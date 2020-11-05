@@ -24,9 +24,9 @@ def test_author_required(app, client, auth):
 def test_exists_required(client, auth):
     access_headers = get_access_headers(auth.login())
     
-    assert client.get('/location/2', headers=access_headers).status_code == 404
-    assert client.put('/location/2', headers=access_headers, json={'name': 'updated', 'maximum_capacity': 5, 'latitude': 5.0, 'longitude': 10.0}).status_code == 404
-    assert client.delete('/location/2', headers=access_headers).status_code == 404
+    assert client.get('/location/8', headers=access_headers).status_code == 404
+    assert client.put('/location/8', headers=access_headers, json={'name': 'updated', 'maximum_capacity': 5, 'latitude': 5.0, 'longitude': 10.0}).status_code == 404
+    assert client.delete('/location/8', headers=access_headers).status_code == 404
 
 def test_create(client, auth, app):
     access_headers = get_access_headers(auth.login())
@@ -39,7 +39,7 @@ def test_create(client, auth, app):
     with app.app_context():
         db = get_db()
         count = db.execute('SELECT COUNT(id) FROM location').fetchone()[0]
-        assert count == 2
+        assert count == 8
 
 def test_get(client, auth, app):
     access_headers = get_access_headers(auth.login())
@@ -47,10 +47,10 @@ def test_get(client, auth, app):
     assert response.status_code == 200
     json_data = response.get_json()
     
-    assert 'test location' == json_data['name']
+    assert 'test location 1' == json_data['name']
     assert 10 == json_data['maximum_capacity']
-    assert 100.0 == json_data['latitude']
-    assert 50.0 == json_data['longitude']
+    assert 31.0 == json_data['latitude']
+    assert 61.0 == json_data['longitude']
     assert 1 == json_data['author_id']
     assert 1 == json_data['id']
 
@@ -126,12 +126,12 @@ def test_all(client, auth, app):
     assert response.status_code == 200
     json_data = response.get_json()
     locations = json_data['locations']
-    assert 1 == len(locations)
+    assert 7 == len(locations)
 
     location = locations[0]
-    assert 'test location' == location['name']
+    assert 'test location 1' == location['name']
     assert 10 == location['maximum_capacity']
-    assert 100.0 == location['latitude']
-    assert 50.0 == location['longitude']
+    assert 31.0 == location['latitude']
+    assert 61.0 == location['longitude']
     assert 1 == location['author_id']
     assert 1 == location['id']

@@ -44,16 +44,14 @@ def checkin():
         (user_id,)).fetchone()
 
     if location_data is None:
-        abort(404, "Location doesn't exist.")
+        return jsonify(message="Location doesn't exist."), 200
 
     if user_data["is_infected"]:
-        abort(404, "Cannot enter, you are infected.")
+        return jsonify(message="Cannot enter, you are infected."), 200
 
-    # TODO dejar entrar a gente en riesgo pero informarle que está en riesgo
-    if user_data["being_in_risk_since"]:
-        abort(404, "Cannot enter, you are maybe infected.")
+    if location_data['people_inside'] == location_data['maximum_capacity']:
+        return jsonify(message="Cannot enter, location is full."), 200
 
-    # TODO check space limit
     db.execute(
         f"UPDATE location SET people_inside = people_inside + 1 WHERE id = {location_id}"
     )

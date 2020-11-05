@@ -12,4 +12,4 @@ VALUES
   ('test location 4', 10, 1, 34.0, 64.0),
   ('test location 5', 10, 1, 35.0, 63.0),
   ('test location 6', 10, 1, 36.0, 62.0),
-  ('test location 7', 10, 1, 37.0, 61.0);
+  ('test location 7', 1, 1, 37.0, 61.0);
