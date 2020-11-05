@@ -46,6 +46,9 @@ def checkin():
     if location_data is None:
         return jsonify(message="Location doesn't exist."), 200
 
+    if user_data['current_location'] is not None:
+        return jsonify(message="You are already in a location."), 200
+
     if user_data["is_infected"]:
         return jsonify(message="Cannot enter, you are infected."), 200
 
@@ -68,7 +71,7 @@ def checkin():
 
     db.commit()
 
-    return ('')
+    return jsonify(message="Checkin successful.")
 
 @bp.route('/checkout', methods=['POST'])
 @jwt_required
@@ -77,6 +80,13 @@ def checkout():
     db = get_db()
     user_id = get_jwt_identity()
     location_id = request.get_json()["location_id"]
+
+    user_data = db.execute(
+        "SELECT * FROM user WHERE id = ?",
+        (user_id,)).fetchone()
+
+    if user_data['current_location'] != location_id:
+        return jsonify(message="Not current location."), 200
     
     db.execute("UPDATE location SET people_inside = people_inside -1 WHERE id = ?", (location_id,))
     db.execute("UPDATE user SET current_location = NULL WHERE id = ?", (user_id,))
@@ -88,4 +98,4 @@ def checkout():
     )
     
     db.commit()
-    return ('')
+    return jsonify(message="Checkout successful.")
