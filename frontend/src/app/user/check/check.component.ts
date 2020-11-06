@@ -10,8 +10,9 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 export class CheckComponent implements OnInit {
 
   currentDevice: MediaDeviceInfo = null;
-  tryHarder = false;
-  has_to_checkin;
+  tryHarder: boolean = false;
+  has_to_checkin: boolean;
+  message: string;
 
   qrResult: string;
 
@@ -33,17 +34,28 @@ export class CheckComponent implements OnInit {
     if (this.has_to_checkin){
       this.checkService.checkin(this.qrResult)
       .subscribe( 
-        () => this.router.navigate(['/location/detail', Number(result)])
+        (response) => {
+          this.message = response["message"]
+          if (response["success"]){
+            setTimeout( () => this.router.navigate(['/location/detail', Number(result)]),5000)
+          }
+          else{
+            setTimeout( () => this.router.navigate(['/user']), 5000)
+          }
+        }
     )
     }
     // Si el usuario ya hizo checkin, hace checkout. Vuelve a user
     else{
       this.checkService.checkout(this.qrResult)
       .subscribe( 
-        () => this.router.navigate(['/user'])
-    )
+        (response) => {
+          this.message = response["message"]
+          setTimeout(() => this.router.navigate(['/user']), 5000)
+        }
+      )
     }
-      }
+  }
 
   // Ver si lo puedo quitar
   toggleTryHarder(): void {
