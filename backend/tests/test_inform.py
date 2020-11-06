@@ -134,3 +134,27 @@ def test_user_gets_risk_from_most_recent_contact_with_infected(app, client, auth
         being_in_risk_since = db.execute('SELECT being_in_risk_since FROM user'
             ' WHERE id = 3').fetchone()['being_in_risk_since']
         assert string_to_datetime(being_in_risk_since) > before
+
+def test_user_cannot_be_in_risk_if_it_is_infected(app, client, auth):
+    # enter location with another user
+    access_headers = get_access_headers(auth.login())
+    client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    access_headers_other = get_access_headers(
+        client.post('/auth/login', json={
+            'username': 'othertest', 'password': 'othertest'
+        }))
+    client.post('/checkin', headers=access_headers_other, json={'location_id': 1})
+    access_headers = get_access_headers(auth.login())
+    client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    client.post('/checkout', headers=access_headers, json={'location_id': 1})
+    client.post('/inform/infection', headers=access_headers, json={'date': date.today()})
+    client.post('/checkout', headers=access_headers_other, json={'location_id': 1})
+    client.post('/inform/infection', headers=access_headers_other, json={'date': date.today()})
+    with app.app_context():
+        db = get_db()
+        users_data = db.execute('SELECT * FROM user').fetchall()
+        
+        assert users_data[0]['being_in_risk_since'] is None
+        assert users_data[0]['is_infected']
+        assert users_data[2]['being_in_risk_since'] is None
+        assert users_data[2]['is_infected']

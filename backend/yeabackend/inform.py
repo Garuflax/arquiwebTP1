@@ -34,7 +34,7 @@ def infection():
     if user_data['is_infected']:
         return jsonify(message='User already informed infection'), 200
     db.execute(
-        'UPDATE user SET is_infected = 1'
+        'UPDATE user SET is_infected = 1, being_in_risk_since = NULL'
         ' WHERE id = ?',
         (user_id,)
     )
@@ -72,17 +72,15 @@ def infection():
     
     mailing_data = []
     for user_in_risk_id, in_risk_since in users_in_risk.items():
-        mailing_data.append(
-            dict(
-                db.execute(
-                    'SELECT username, email FROM user WHERE id = ? AND (being_in_risk_since IS NULL OR being_in_risk_since < ?)',
-                    (user_in_risk_id, in_risk_since)
-                ).fetchone()
-            )
-        )
+        user_mailing_data = db.execute(
+            'SELECT username, email FROM user WHERE id = ? AND is_infected = 0 AND (being_in_risk_since IS NULL OR being_in_risk_since < ?)',
+            (user_in_risk_id, in_risk_since)
+        ).fetchone()
+        if user_mailing_data is not None:
+            mailing_data.append(dict(user_mailing_data))
         db.execute(
             'UPDATE user SET being_in_risk_since = ?'
-            ' WHERE id = ? AND (being_in_risk_since IS NULL OR being_in_risk_since < ?)',
+            ' WHERE id = ? AND is_infected = 0 AND (being_in_risk_since IS NULL OR being_in_risk_since < ?)',
             (in_risk_since, user_in_risk_id, in_risk_since)
         )
     db.commit()
@@ -97,7 +95,6 @@ def infection():
                 sender="from@example.com",
                 recipients=[email],)
         mail.send(msg)
-    # FIXME se puede estar infectado y en riesgo. ¿Queremos eso?
 
     return jsonify(message='Infection reported succesfully'), 200
 

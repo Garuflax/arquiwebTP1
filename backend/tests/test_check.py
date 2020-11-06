@@ -12,8 +12,10 @@ def test_cannot_checkin_to_location_that_does_not_exist(app, client, auth):
     access_headers = get_access_headers(auth.login())
     
     response = client.post('/checkin', headers=access_headers, json={'location_id': 8})
+    response_json = response.get_json()
     assert response.status_code == 200
-    assert response.get_json()['message'] == "Location doesn't exist."
+    assert response_json['message'] == "Location doesn't exist."
+    assert not response_json['success']
     with app.app_context():
         db = get_db()
         current_location = db.execute('SELECT current_location FROM user'
@@ -27,8 +29,10 @@ def test_cannot_checkin_if_user_is_infected(app, client, auth):
     
     client.post('/inform/infection', headers=access_headers, json={'date': date.today()})
     response = client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    response_json = response.get_json()
     assert response.status_code == 200
-    assert response.get_json()['message'] == "Cannot enter, you are infected."
+    assert response_json['message'] == "Cannot enter, you are infected."
+    assert not response_json['success']
     with app.app_context():
         db = get_db()
         current_location = db.execute('SELECT current_location FROM user'
@@ -40,10 +44,12 @@ def test_cannot_checkin_if_user_is_infected(app, client, auth):
 def test_cannot_checkin_if_user_is_already_in_a_location(app, client, auth):
     access_headers = get_access_headers(auth.login())
     
-    response = client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    client.post('/checkin', headers=access_headers, json={'location_id': 1})
     response = client.post('/checkin', headers=access_headers, json={'location_id': 2})
+    response_json = response.get_json()
     assert response.status_code == 200
-    assert response.get_json()['message'] == "You are already in a location."
+    assert response_json['message'] == "You are already in a location."
+    assert not response_json['success']
     with app.app_context():
         db = get_db()
         current_location = db.execute('SELECT current_location FROM user'
@@ -62,8 +68,10 @@ def test_cannot_checkin_to_maxed_location(app, client, auth):
     access_headers = get_access_headers(auth.login())
     
     response = client.post('/checkin', headers=access_headers, json={'location_id': 7})
+    response_json = response.get_json()
     assert response.status_code == 200
-    assert response.get_json()['message'] == "Cannot enter, location is full."
+    assert response_json['message'] == "Cannot enter, location is full."
+    assert not response_json['success']
     with app.app_context():
         db = get_db()
         current_location = db.execute('SELECT current_location FROM user'
@@ -77,8 +85,10 @@ def test_cannot_checkout_if_user_is_not_in_location(app, client, auth):
     access_headers = get_access_headers(auth.login())
     
     response = client.post('/checkout', headers=access_headers, json={'location_id': 1})
+    response_json = response.get_json()
     assert response.status_code == 200
-    assert response.get_json()['message'] == "Not current location."
+    assert response_json['message'] == "Not current location."
+    assert not response_json['success']
     with app.app_context():
         db = get_db()
         current_location = db.execute('SELECT current_location FROM user'
@@ -90,7 +100,11 @@ def test_cannot_checkout_if_user_is_not_in_location(app, client, auth):
 def test_checkin(app, client, auth):
     access_headers = get_access_headers(auth.login())
 
-    client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    response = client.post('/checkin', headers=access_headers, json={'location_id': 1})
+    response_json = response.get_json()
+    assert response.status_code == 200
+    assert response_json['message'] == "Checkin successful."
+    assert response_json['success']
 
     with app.app_context():
         db = get_db()
@@ -110,7 +124,11 @@ def test_checkout(app, client, auth):
     access_headers = get_access_headers(auth.login())
 
     client.post('/checkin', headers=access_headers, json={'location_id': 1})
-    client.post('/checkout', headers=access_headers, json={'location_id': 1})
+    response = client.post('/checkout', headers=access_headers, json={'location_id': 1})
+    response_json = response.get_json()
+    assert response.status_code == 200
+    assert response_json['message'] == "Checkout successful."
+    assert response_json['success']
 
     with app.app_context():
         db = get_db()
