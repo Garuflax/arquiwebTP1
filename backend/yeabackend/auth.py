@@ -13,6 +13,7 @@ from flask_jwt_extended import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from yeabackend.db import get_db
+from yeabackend.request_utils import get_fields
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -21,22 +22,14 @@ def register():
     """Register user without
     admin privilege
     """
-    json_data = request.get_json()
-    username = json_data['username']
-    password = json_data['password']
-    email = json_data['email']
+    (username, password, email) = get_fields(request,
+        ['username', 'password', 'email'])
     db = get_db()
 
     created = True
     message = 'User registered succesfully'
 
-    if not username:
-        abort(400, 'Username is required.')
-    elif not password:
-        abort(400, 'Password is required.')
-    elif not email:
-        abort(400, 'Email is required.')
-    elif db.execute(
+    if db.execute(
         'SELECT id FROM user WHERE username = ?', (username,)
     ).fetchone() is not None:
         created = False
@@ -54,9 +47,8 @@ def register():
 
 @bp.route('/login', methods=['POST'])
 def login():
-    json_data = request.get_json()
-    username = json_data['username']
-    password = json_data['password']
+    (username, password) = get_fields(request,
+        ['username', 'password'])
     db = get_db()
     error = None
     user = db.execute(

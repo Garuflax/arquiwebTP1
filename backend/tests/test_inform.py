@@ -18,7 +18,10 @@ def test_date_required(client, auth, url):
     access_headers = get_access_headers(auth.login())
     response = client.post(url, headers=access_headers)
     assert response.status_code == 400
-    assert b'Date is required.' in response.data
+    assert b'Missing json.' in response.data
+    response = client.post(url, headers=access_headers, json={})
+    assert response.status_code == 400
+    assert b'Missing field: date.' in response.data
 
 def test_cannot_inform_infection_inside_location(app, client, auth):
     access_headers = get_access_headers(auth.login())

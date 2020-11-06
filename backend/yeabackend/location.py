@@ -12,6 +12,8 @@ from flask_qrcode import QRcode
 from werkzeug.exceptions import abort
 
 from yeabackend.db import get_db
+from yeabackend.request_utils import get_fields
+from yeabackend.db_access import get_location
 
 bp = Blueprint('location', __name__, url_prefix='/location')
 
@@ -21,7 +23,8 @@ def create():
 
     user_id = get_jwt_identity()
 
-    (name, maximum_capacity, latitude, longitude) = get_fields(request.get_json())
+    (name, maximum_capacity, latitude, longitude) = get_fields(request,
+        ['name', 'maximum_capacity', 'latitude', 'longitude'])
 
     db = get_db()
     db.execute(
@@ -88,50 +91,3 @@ def user_is_owner(location_id):
 def get_qrcode(id):
     if user_is_owner(id):
         return send_file(QRcode.qrcode(id, mode="raw"), mimetype="image/png")
-
-def get_location(id, check_author=True):
-
-    user_id = get_jwt_identity()
-
-    location = get_db().execute(
-        'SELECT p.id, name, maximum_capacity, author_id, people_inside, latitude, longitude'
-        ' FROM location p JOIN user u ON p.author_id = u.id'
-        ' WHERE p.id = ?',
-        (id,)
-    ).fetchone()
-
-    if location is None:
-        abort(404, "Location id {0} doesn't exist.".format(id))
-
-    if check_author and location['author_id'] != user_id:
-        abort(403)
-
-    return location
-
-def get_fields(json_data):
-
-    fields = ['name', 'maximum_capacity', 'latitude', 'longitude']
-
-    for field in fields:
-        if field not in json_data:
-            abort(400, 'Missing field: {0}.'.format(field))
-
-    name = json_data['name']
-    maximum_capacity = json_data['maximum_capacity']
-    latitude = json_data['latitude']
-    longitude = json_data['longitude']
-
-    if not name:
-        abort(400, 'Name is required.')
-
-    if not maximum_capacity:
-        abort(400, 'Maximum capacity is required.')
-
-    if not latitude:
-        abort(400, 'Latitude is required.')
-
-    if not longitude:
-        abort(400, 'Longitude is required.')
-
-    return (name, maximum_capacity, latitude, longitude)
-

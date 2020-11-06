@@ -8,9 +8,10 @@ from flask_jwt_extended import (
 from flask_mail import Mail, Message
 
 from werkzeug.exceptions import abort
-from datetime import datetime
 
 from yeabackend.db import get_db
+from yeabackend.request_utils import get_fields
+from yeabackend.time_utils import (current_datetime, string_to_datetime)
 
 bp = Blueprint('inform', __name__, url_prefix='/inform')
 
@@ -20,10 +21,7 @@ def infection():
 
     user_id = get_jwt_identity()
 
-    try:
-        date = request.get_json()['date']
-    except Exception as e:
-        abort(400, 'Date is required.')
+    (date,) = get_fields(request, ['date'])
 
     db = get_db()
 
@@ -60,7 +58,7 @@ def infection():
         for row_d in d:
             d_check_in_time = string_to_datetime(row_d['check_in_time'])
             if row_d['check_out_time'] is None:
-                d_check_out_time = datetime.now()
+                d_check_out_time = current_datetime()
             else:
                 d_check_out_time = string_to_datetime(row_d['check_out_time'])
             if were_together(c_check_in_time, c_check_out_time, d_check_in_time, d_check_out_time):
@@ -104,10 +102,7 @@ def discharge():
     
     user_id = get_jwt_identity()
 
-    try:
-        date = request.get_json()['date']
-    except Exception as e:
-        abort(400, 'Date is required.')
+    (date,) = get_fields(request, ['date'])
 
     db = get_db()
 
@@ -133,6 +128,3 @@ def get_user_data(user_id, db):
 
 def were_together(user1_check_in, user1_check_out, user2_check_in, user2_check_out):
     return user1_check_in <= user2_check_out and user2_check_in <= user1_check_out
-
-def string_to_datetime(ts):
-    return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')

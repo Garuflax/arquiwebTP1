@@ -50,10 +50,10 @@ def test_author_not_required(client, auth, app):
     assert client.get('/location/1', headers=access_headers).status_code == 200
 
 @pytest.mark.parametrize(('name', 'maximum_capacity', 'latitude', 'longitude','error'), (
-    ('', 10, 5.0, 10.0, b'Name is required.'),
-    ('created', 0, 5.0, 10.0, b'Maximum capacity is required.'),
-    ('created', 10, 0.0, 10.0, b'Latitude is required.'),
-    ('created', 10, 5.0, 0.0, b'Longitude is required.'),
+    ('', 10, 5.0, 10.0, b'Invalid field: name.'),
+    ('created', 0, 5.0, 10.0, b'Invalid field: maximum_capacity.'),
+    ('created', 10, 0.0, 10.0, b'Invalid field: latitude.'),
+    ('created', 10, 5.0, 0.0, b'Invalid field: longitude.'),
 ))
 def test_create_validate(client, auth, name, maximum_capacity, latitude, longitude, error):
     access_headers = get_access_headers(auth.login())
