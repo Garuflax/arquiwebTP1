@@ -6,27 +6,11 @@ def test_login_required(client):
     assert client.post('/location/create').status_code == 401
     assert client.get('/location/all').status_code == 401
     assert client.get('/location/1').status_code == 401
-    assert client.put('/location/1').status_code == 401
-    assert client.delete('/location/1').status_code == 401
-
-def test_author_required(app, client, auth):
-    # change the location author to another user
-    with app.app_context():
-        db = get_db()
-        db.execute('UPDATE location SET author_id = 2 WHERE id = 1')
-        db.commit()
-
-    access_headers = get_access_headers(auth.login())
-    # current user can't modify other user's location
-    assert client.put('/location/1', headers=access_headers, json={'name': 'updated', 'maximum_capacity': 5, 'latitude': 5.0, 'longitude': 10.0}).status_code == 403
-    assert client.delete('/location/1', headers=access_headers).status_code == 403
 
 def test_exists_required(client, auth):
     access_headers = get_access_headers(auth.login())
     
     assert client.get('/location/8', headers=access_headers).status_code == 404
-    assert client.put('/location/8', headers=access_headers, json={'name': 'updated', 'maximum_capacity': 5, 'latitude': 5.0, 'longitude': 10.0}).status_code == 404
-    assert client.delete('/location/8', headers=access_headers).status_code == 404
 
 def test_create(client, auth, app):
     access_headers = get_access_headers(auth.login())
@@ -65,33 +49,15 @@ def test_author_not_required(client, auth, app):
     # current user can get other user's location
     assert client.get('/location/1', headers=access_headers).status_code == 200
 
-def test_update(client, auth, app):
-    access_headers = get_access_headers(auth.login())
-    client.put('/location/1',
-        headers=access_headers,
-        json={'name': 'updated', 'maximum_capacity': 5, 'latitude': 5.0, 'longitude': 10.0}
-    )
-
-    with app.app_context():
-        db = get_db()
-        location = db.execute('SELECT * FROM location WHERE id = 1').fetchone()
-        assert location['name'] == 'updated'
-        assert location['maximum_capacity'] == 5
-        assert location['latitude'] == 5.0
-        assert location['longitude'] == 10.0
-
 @pytest.mark.parametrize(('name', 'maximum_capacity', 'latitude', 'longitude','error'), (
     ('', 10, 5.0, 10.0, b'Name is required.'),
     ('created', 0, 5.0, 10.0, b'Maximum capacity is required.'),
     ('created', 10, 0.0, 10.0, b'Latitude is required.'),
     ('created', 10, 5.0, 0.0, b'Longitude is required.'),
 ))
-def test_create_update_validate(client, auth, name, maximum_capacity, latitude, longitude, error):
+def test_create_validate(client, auth, name, maximum_capacity, latitude, longitude, error):
     access_headers = get_access_headers(auth.login())
     response = client.post('/location/create', headers=access_headers, json={'name': name, 'maximum_capacity': maximum_capacity, 'latitude': latitude, 'longitude': longitude})
-    assert response.status_code == 400
-    assert error in response.data
-    response = client.put('/location/1', headers=access_headers, json={'name': name, 'maximum_capacity': maximum_capacity, 'latitude': latitude, 'longitude': longitude})
     assert response.status_code == 400
     assert error in response.data
 
@@ -101,24 +67,12 @@ def test_create_update_validate(client, auth, name, maximum_capacity, latitude, 
     ({'name': 'name', 'maximum_capacity': 10, 'longitude': 10.0}, b'Missing field: latitude.'),
     ({'name': 'name', 'maximum_capacity': 10, 'latitude': 5.0}, b'Missing field: longitude.'),
 ))
-def test_create_update_check_fields(client, auth, json, error):
+def test_create_check_fields(client, auth, json, error):
     access_headers = get_access_headers(auth.login())
 
     response = client.post('/location/create', headers=access_headers, json=json)
     assert response.status_code == 400
     assert error in response.data
-    response = client.put('/location/1', headers=access_headers, json=json)
-    assert response.status_code == 400
-    assert error in response.data
-
-def test_delete(client, auth, app):
-    access_headers = get_access_headers(auth.login())
-    response = client.delete('/location/1', headers=access_headers)
-
-    with app.app_context():
-        db = get_db()
-        location = db.execute('SELECT * FROM location WHERE id = 1').fetchone()
-        assert location is None
 
 def test_all(client, auth, app):
     access_headers = get_access_headers(auth.login())

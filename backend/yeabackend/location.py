@@ -33,31 +33,9 @@ def create():
     return jsonify(created=True,
                    message='Location created succesfully'), 201
 
-@bp.route('/<int:id>', methods=['GET','PUT','DELETE'])
+@bp.route('/<int:id>', methods=['GET'])
 @jwt_required
 def location(id):
-
-    if request.method == 'PUT':
-        get_location(id)
-        (name, maximum_capacity, latitude, longitude) = get_fields(request.get_json())
-        
-        db = get_db()
-        db.execute(
-            'UPDATE location SET name = ?, maximum_capacity = ?, latitude = ?, longitude = ?'
-            ' WHERE id = ?',
-            (name, maximum_capacity, latitude, longitude, id)
-        )
-        db.commit()
-
-        return jsonify(message='Location updated succesfully.')
-    elif request.method == 'DELETE':
-        get_location(id)
-
-        db = get_db()
-        db.execute('DELETE FROM location WHERE id = ?', (id,))
-        db.commit()
-
-        return jsonify(message='Location deleted succesfully.')
     
     location = get_location(id, False)
     return jsonify(name=location['name'],
