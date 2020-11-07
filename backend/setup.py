@@ -8,5 +8,8 @@ setup(
     zip_safe=False,
     install_requires=[
         'flask',
+        'flask_cors',
+        'flask_mail',
+        'flask_jwt_extended',
     ],
 )
