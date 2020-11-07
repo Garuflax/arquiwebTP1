@@ -11,9 +11,8 @@ from flask_qrcode import QRcode
 
 from werkzeug.exceptions import abort
 
-from yeabackend.db import get_db
 from yeabackend.request_utils import get_fields
-from yeabackend.db_access import get_location
+from yeabackend.db_access import (get_location, get_locations, add_location)
 
 bp = Blueprint('location', __name__, url_prefix='/location')
 
@@ -26,13 +25,8 @@ def create():
     (name, maximum_capacity, latitude, longitude) = get_fields(request,
         ['name', 'maximum_capacity', 'latitude', 'longitude'])
 
-    db = get_db()
-    db.execute(
-        'INSERT INTO location (name, maximum_capacity, latitude, longitude, author_id)'
-        ' VALUES (?, ?, ?, ?, ?)',
-        (name, maximum_capacity, latitude, longitude, user_id)
-    )
-    db.commit()
+    add_location(name, maximum_capacity, latitude, longitude, user_id)
+
     return jsonify(created=True,
                    message='Location created succesfully'), 201
 
@@ -41,35 +35,13 @@ def create():
 def location(id):
     
     location = get_location(id, False)
-    return jsonify(name=location['name'],
-        maximum_capacity=location['maximum_capacity'],
-        people_inside = location['people_inside'],
-        latitude = location['latitude'],
-        longitude = location['longitude'],
-        author_id=location['author_id'],
-        id=location['id'],
-    )
+    return jsonify(dict(location))
 
 @bp.route('/all', methods=['GET'])
 @jwt_required
 def all():
-
-    locations = []
-    c = get_db().cursor()
-    c.execute('SELECT * FROM location')
-
-    for row in c:
-        locations.append(dict(
-            name=row['name'],
-            maximum_capacity=row['maximum_capacity'],
-            people_inside = row['people_inside'],
-            latitude = row['latitude'],
-            longitude = row['longitude'],
-            author_id=row['author_id'],
-            id=row['id']
-        ))
         
-    return jsonify(locations=locations)
+    return jsonify(locations=get_locations())
 
 @bp.route("/<int:id>/qrcode", methods=["GET"])
 @jwt_required

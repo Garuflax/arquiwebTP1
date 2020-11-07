@@ -10,6 +10,7 @@ from flask_mail import Mail, Message
 from werkzeug.exceptions import abort
 
 from yeabackend.db import get_db
+from yeabackend.db_access import get_current_user
 from yeabackend.request_utils import get_fields
 from yeabackend.time_utils import (current_datetime, string_to_datetime)
 
@@ -25,7 +26,7 @@ def infection():
 
     db = get_db()
 
-    user_data = get_user_data(user_id, db)
+    user_data = get_current_user()
 
     if user_data['current_location']:
         return jsonify(message='User cannot be inside location'), 200
@@ -106,7 +107,7 @@ def discharge():
 
     db = get_db()
 
-    user_data = get_user_data(user_id, db)
+    user_data = get_current_user()
 
     if not user_data['is_infected']:
         return jsonify(message='User is not infected'), 200
@@ -118,13 +119,6 @@ def discharge():
     )
     db.commit()
     return jsonify(message='Discharge reported succesfully'), 200
-
-def get_user_data(user_id, db):
-    return db.execute(
-        'SELECT is_infected, current_location FROM user'
-        ' WHERE id = ?',
-        (user_id,)
-    ).fetchone()
 
 def were_together(user1_check_in, user1_check_out, user2_check_in, user2_check_out):
     return user1_check_in <= user2_check_out and user2_check_in <= user1_check_out

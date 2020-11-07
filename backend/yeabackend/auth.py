@@ -12,7 +12,7 @@ from flask_jwt_extended import (
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from yeabackend.db import get_db
+from yeabackend.db_access import (get_user_by_username, add_user)
 from yeabackend.request_utils import get_fields
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -24,36 +24,23 @@ def register():
     """
     (username, password, email) = get_fields(request,
         ['username', 'password', 'email'])
-    db = get_db()
 
-    created = True
-    message = 'User registered succesfully'
+    if get_user_by_username(username) is not None:
+        return jsonify(created=False, 
+            message='User {} is already registered.'.format(username)), 200
 
-    if db.execute(
-        'SELECT id FROM user WHERE username = ?', (username,)
-    ).fetchone() is not None:
-        created = False
-        message = 'User {} is already registered.'.format(username)
+    add_user(username, generate_password_hash(password), email, False)
 
-    if created:
-        db.execute(
-            'INSERT INTO user (username, password, email, is_admin) VALUES (?, ?, ?, ?)',
-            (username, generate_password_hash(password), email, False)
-        )
-        db.commit()
-
-    return jsonify(created=created,
-                   message=message), 201
+    return jsonify(created=True,
+                   message='User registered succesfully.'), 201
 
 @bp.route('/login', methods=['POST'])
 def login():
     (username, password) = get_fields(request,
         ['username', 'password'])
-    db = get_db()
+
     error = None
-    user = db.execute(
-        'SELECT * FROM user WHERE username = ?', (username,)
-    ).fetchone()
+    user = get_user_by_username(username)
 
     if user is None:
         error = 'Incorrect username.'

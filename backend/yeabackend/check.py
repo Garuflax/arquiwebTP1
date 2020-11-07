@@ -11,6 +11,7 @@ from flask_jwt_extended import (
 from werkzeug.exceptions import abort
 
 from yeabackend.db import get_db
+from yeabackend.db_access import (get_current_user, get_location)
 from yeabackend.request_utils import get_fields
 from yeabackend.time_utils import current_datetime_string
 from yeabackend.location import bp as location_bp
@@ -21,7 +22,7 @@ bp = Blueprint('check', __name__)
 
 @bp.route('/current_location', methods=['GET'])
 @jwt_required
-def current_location():
+def current_location(): #TODO SACAR
     db  = get_db()
     user_id = get_jwt_identity()
     location_data = db.execute(
@@ -35,16 +36,9 @@ def checkin():
     (location_id,) = get_fields(request, ['location_id'])
 
     db = get_db()
-    location_data = db.execute(
-        "SELECT * FROM location WHERE id = ?",
-        (location_id,)).fetchone()
+    location_data = get_location(location_id, False)
     
-    user_data = db.execute(
-        "SELECT * FROM user WHERE id = ?",
-        (user_id,)).fetchone()
-
-    if location_data is None:
-        return jsonify(success=False, message="Location doesn't exist."), 200
+    user_data = get_current_user()
 
     if user_data['current_location'] is not None:
         return jsonify(success=False, message="You are already in a location."), 200
@@ -81,9 +75,7 @@ def checkout():
     user_id = get_jwt_identity()
     (location_id,) = get_fields(request, ['location_id'])
 
-    user_data = db.execute(
-        "SELECT * FROM user WHERE id = ?",
-        (user_id,)).fetchone()
+    user_data = get_current_user()
 
     if user_data['current_location'] != location_id:
         return jsonify(success=False, message="Not current location."), 200

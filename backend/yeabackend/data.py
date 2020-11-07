@@ -10,21 +10,12 @@ from flask_jwt_extended import (
 
 from werkzeug.exceptions import abort
 
-from yeabackend.db import get_db
+from yeabackend.db_access import get_current_user
 
 bp = Blueprint('data', __name__)
 
 @bp.route('/status', methods=['GET'])
 @jwt_required
 def status():
-    db  = get_db()
-    user_id = get_jwt_identity()
-    user_data = db.execute(
-        "SELECT * FROM user WHERE id = ?",(user_id,)).fetchone()
-    return (jsonify(username = user_data["username"],
-        current_location = user_data["current_location"],
-        is_infected = user_data["is_infected"],
-        being_in_risk_since = user_data["being_in_risk_since"],
-        is_admin = user_data["is_admin"]
-        ))
+    return (jsonify(dict(get_current_user())))
 

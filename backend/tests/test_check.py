@@ -12,10 +12,9 @@ def test_cannot_checkin_to_location_that_does_not_exist(app, client, auth):
     access_headers = get_access_headers(auth.login())
     
     response = client.post('/checkin', headers=access_headers, json={'location_id': 8})
-    response_json = response.get_json()
-    assert response.status_code == 200
-    assert response_json['message'] == "Location doesn't exist."
-    assert not response_json['success']
+    assert response.status_code == 404
+    assert b"Location id 8 doesn't exist." in response.data
+    
     with app.app_context():
         db = get_db()
         current_location = db.execute('SELECT current_location FROM user'

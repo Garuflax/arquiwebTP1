@@ -3,8 +3,62 @@ from werkzeug.exceptions import abort
 
 from yeabackend.db import get_db
 
-def get_location(id, check_author=True):
+def get_all(table_name):
+    """Get all rows from table of database and
+    convert it to array of dictionaries.
+    """
+    c = get_db().cursor()
+    c.execute('SELECT * FROM {}'.format(table_name))
 
+    return [dict(row) for row in c]
+
+def get_current_user():
+    """Get current user from database.
+    """
+    return get_user_by_id(get_jwt_identity())
+
+def get_user(identifier, value):
+    """Get user from database using
+    the identifier and value.
+    """
+    user = get_db().execute(
+        'SELECT * FROM user WHERE {} = ?'.format(identifier),
+        (value,)
+    ).fetchone()
+
+    return user
+
+def get_user_by_id(id):
+    """Get user from database by id.
+    """
+    return get_user('id', id)
+
+def get_user_by_username(username):
+    """Get user from database by
+    username.
+    """
+    return get_user('username', username)
+
+def get_users():
+    """Get all users from database and
+    convert it to array of dictionaries.
+    """
+    return get_all('user')
+
+def add_user(username, password, email, is_admin):
+    """Insert user to database.
+    """
+    db = get_db()
+    db.execute(
+            'INSERT INTO user (username, password, email, is_admin) VALUES (?, ?, ?, ?)',
+            (username, password, email, is_admin)
+        )
+    db.commit()
+
+def get_location(id, check_author=True):
+    """Get location from database and check
+    user is author if desired.
+    """
     location = get_db().execute(
         'SELECT * FROM location WHERE id = ?',
         (id,)
@@ -17,3 +71,20 @@ def get_location(id, check_author=True):
         abort(403)
 
     return location
+
+def get_locations():
+    """Get all locations from database and
+    convert it to array of dictionaries.
+    """
+    return get_all('location')
+
+def add_location(name, maximum_capacity, latitude, longitude, author_id):
+    """Insert location to database.
+    """
+    db = get_db()
+    db.execute(
+        'INSERT INTO location (name, maximum_capacity, latitude, longitude, author_id)'
+        ' VALUES (?, ?, ?, ?, ?)',
+        (name, maximum_capacity, latitude, longitude, author_id)
+    )
+    db.commit()

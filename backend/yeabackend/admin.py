@@ -10,28 +10,13 @@ from flask_jwt_extended import (
 
 from werkzeug.exceptions import abort
 
-from yeabackend.db import get_db
+from yeabackend.db_access import (get_current_user, get_users)
+bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-bp = Blueprint('admin', __name__)
-
-@bp.route('/admin/users', methods=['GET'])
+@bp.route('/users', methods=['GET'])
 @jwt_required
 def get_users_data():
-    # Checkear que efectivamente es el admin
-    db  = get_db()
-    users_data = db.execute(
-        "SELECT * FROM user"
-    )
-    return jsonify([dict(row) for row in users_data.fetchall()])
-
-
-@bp.route('/admin/locations', methods=['GET'])
-@jwt_required
-def get_locations_data():
-    # Checkear que efectivamente es el admin
-    db  = get_db()
-    locations_data = db.execute(
-        "SELECT * FROM location"
-    )
-    # print(locations_data)
-    return jsonify([dict(row) for row in locations_data.fetchall()])
+    if not get_current_user()['is_admin']:
+        abort(403)
+    
+    return jsonify(get_users())
