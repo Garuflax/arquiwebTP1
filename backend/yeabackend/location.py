@@ -69,7 +69,6 @@ def all():
             id=row['id']
         ))
         
-    print(locations)
     return jsonify(locations=locations)
 
 def user_is_owner(location_id):
