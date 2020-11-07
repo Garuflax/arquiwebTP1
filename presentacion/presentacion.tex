@@ -1,0 +1,82 @@
+\documentclass{beamer}
+
+%\usepackage[utf8]{inputenc} %Para acentos en UTF8 (Prueba: á é í ó ú Á É Í Ó Ú ñ Ñ)
+
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[absolute,overlay]{textpos}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+
+\usetheme{Warsaw}
+
+\usecolortheme[rgb={1,0.48,0.0}]{structure}%divido los RGB por 252
+\setbeamercolor{block title}{fg=white,bg=verdeuca}
+\xdefinecolor{verdeuca}{rgb}{0.0,0.48,0.54}
+\xdefinecolor{naranjauca}{rgb}{1,0.48,0.0}
+\setbeamercolor{palette quaternary}{fg=white,bg=verdeuca}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{color}
+
+\title{Presentación Trabajo Práctico 1}
+\subtitle{Arquitecturas de Aplicaciones Web}
+
+\author[David A. González Márquez]{David Alejandro González Márquez}
+\institute{Departamento de Computación\\
+Facultad de Ciencias Exactas y Naturales\\
+Universidad de Buenos Aires}
+\date{18-11-20}
+
+\definecolor{celeste}{rgb}{.255,.41,.884}
+\definecolor{rojo}{rgb}{1, 0, 0}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}
+    \frametitle{Agenda}
+    \begin{itemize}\setlength\itemsep{2em}
+     \item[-] Introducción a Bochs
+     \item[-] Bootloader, Compilado y Enlazado
+     \item[-] Pasaje a Modo Protegido
+     \item[-] Presentación del TP3
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{¿Porque usar bochs?}
+    El procesador posee intrucciones que no se pueden usar a nivel de usuario. \\
+    Por lo tanto, si queremos acceder a estos mecanismos debemos estar en lugar del sistema operativo.
+    \vspace{0.3cm}
+    \begin{itemize}
+    \item[-] Utilizar instrucciones de nivel privilegiado
+    \item[-] Acceder a los mecanismos de manejo de memoria
+    \item[-] Cambiar modos del procesador
+    \item[-] Controlar interrupciones
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{VM con Debugger}
+    Un debugger como \texttt{gdb} es un \textcolor{blue}{proceso} más.
+    No puede monitorear el sistema operativo.
+    %\begin{center}
+    %\includegraphics[scale=0.5]{img/bochsdbg.png}\\
+    %Bochs + Debugger
+    %\end{center}
+    Necesitamos un debugger \textcolor{blue}{en} la Virtual Machine.
+\end{frame}
+
+
+\begin{frame}[plain]
+    \begin{center}
+    \Huge !`!`!`Gracias!!! \\
+    \vspace{1cm}
+    \Huge ¿Preguntas?
+    \end{center}
+\end{frame}
+
+\end{document}
