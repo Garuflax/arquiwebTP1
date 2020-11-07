@@ -6,11 +6,23 @@ def test_login_required(client):
     assert client.post('/location/create').status_code == 401
     assert client.get('/location/all').status_code == 401
     assert client.get('/location/1').status_code == 401
+    assert client.get('/location/1/qrcode').status_code == 401
 
 def test_exists_required(client, auth):
     access_headers = get_access_headers(auth.login())
     
     assert client.get('/location/8', headers=access_headers).status_code == 404
+
+def test_author_required(app, client, auth):
+    # change the location author to another user
+    with app.app_context():
+        db = get_db()
+        db.execute('UPDATE location SET author_id = 2 WHERE id = 1')
+        db.commit()
+
+    access_headers = get_access_headers(auth.login())
+    # current user can't get other user's location qr
+    assert client.get('/location/1/qrcode', headers=access_headers).status_code == 403
 
 def test_create(client, auth, app):
     access_headers = get_access_headers(auth.login())
@@ -89,3 +101,9 @@ def test_all(client, auth, app):
     assert 61.0 == location['longitude']
     assert 1 == location['author_id']
     assert 1 == location['id']
+
+def test_qrcode(client, auth):
+    access_headers = get_access_headers(auth.login())
+    response = client.get('/location/1/qrcode', headers=access_headers)
+    assert response.status_code == 200
+    assert response.mimetype == "image/png"

@@ -71,22 +71,8 @@ def all():
         
     return jsonify(locations=locations)
 
-def user_is_owner(location_id):
-
-    user_id = get_jwt_identity()
-
-    location = get_db().execute(
-        'SELECT p.id, name, maximum_capacity, author_id'
-        ' FROM location p JOIN user u ON p.author_id = u.id'
-        ' WHERE p.id = ?',
-        (location_id,)
-    ).fetchone()
-
-    return location['author_id'] == user_id
-
-
 @bp.route("/<int:id>/qrcode", methods=["GET"])
 @jwt_required
 def get_qrcode(id):
-    if user_is_owner(id):
-        return send_file(QRcode.qrcode(id, mode="raw"), mimetype="image/png")
+    get_location(id, True)
+    return send_file(QRcode.qrcode(id, mode="raw"), mimetype="image/png")
