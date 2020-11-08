@@ -88,3 +88,63 @@ def add_location(name, maximum_capacity, latitude, longitude, author_id):
         (name, maximum_capacity, latitude, longitude, author_id)
     )
     db.commit()
+
+def enter_user_to_location(user_id, location_id, time):
+    """Update tables with checkin.
+    """
+    db = get_db()
+
+    db.execute(
+        f"UPDATE location SET people_inside = people_inside + 1 WHERE id = {location_id}"
+    )
+    
+    db.execute(
+        f"UPDATE user SET current_location = {location_id}  WHERE id = {user_id}"
+    )
+
+    db.execute(
+        'INSERT INTO checks (author_id, location_id, check_in_time)'
+        ' VALUES (?, ?, ?)',
+        (user_id, location_id, time)
+    )
+
+    db.commit()
+
+def exit_user_from_location(user_id, location_id, time):
+    """Update tables with checkout.
+    """
+    db = get_db()
+
+    db.execute("UPDATE location SET people_inside = people_inside -1 WHERE id = ?", (location_id,))
+    db.execute("UPDATE user SET current_location = NULL WHERE id = ?", (user_id,))
+
+    db.execute(
+        'UPDATE checks SET check_out_time = ?'
+        ' WHERE author_id = ? AND check_out_time IS NULL',
+        (time, user_id)
+    )
+    
+    db.commit()
+
+def add_infection(user_id):#TODO
+    """Update tables with infection
+    and return TODO.
+    """
+    db = get_db()
+    db.execute(
+        'UPDATE user SET is_infected = 1, being_in_risk_since = NULL'
+        ' WHERE id = ?',
+        (user_id,)
+    )
+    db.commit()
+
+def remove_infection(user_id):
+    """Update tables with discharge.
+    """
+    db = get_db()
+    db.execute(
+        'UPDATE user SET is_infected = 0'
+        ' WHERE id = ?',
+        (user_id,)
+    )
+    db.commit()
