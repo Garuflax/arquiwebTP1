@@ -20,5 +20,5 @@ def test_get_users_data(client, auth):
     response = client.get('/admin/users', headers=access_headers_admin)
     
     users = response.get_json()
-    assert len(users) == 3
+    assert len(users) == 4
     assert users[0]['username'] == 'usertest'

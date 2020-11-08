@@ -2,6 +2,7 @@ from flask_jwt_extended import get_jwt_identity
 from werkzeug.exceptions import abort
 
 from yeabackend.db import get_db
+from yeabackend.time_utils import (string_to_datetime, datetime_to_string)
 
 def get_all(table_name):
     """Get all rows from table of database and
@@ -126,17 +127,61 @@ def exit_user_from_location(user_id, location_id, time):
     
     db.commit()
 
-def add_infection(user_id):#TODO
-    """Update tables with infection
-    and return TODO.
+def add_infection(user_id):
+    """Update tables with infection,
+    set users in risk that correspond
+    and return those users.
     """
+    users_reached = {}
     db = get_db()
+    c = db.cursor()
+    c.execute('SELECT * FROM checks'
+        ' WHERE author_id = ?',
+        (user_id,)
+    )
+
+    for row_c in c:
+        d = db.cursor()
+        d.execute('SELECT * FROM checks'
+            ' WHERE NOT author_id = ? AND location_id = ? AND check_in_time <= ? AND (check_out_time IS NULL OR ? <= check_out_time)',
+            (user_id, row_c['location_id'], row_c['check_out_time'], row_c['check_in_time'])
+        )
+        
+        c_check_in_time = string_to_datetime(row_c['check_in_time'])
+        c_check_out_time = string_to_datetime(row_c['check_out_time'])
+
+        for row_d in d:
+            d_check_in_time = string_to_datetime(row_d['check_in_time'])
+            if row_d['check_out_time'] is None:
+                d_check_out_time = c_check_out_time
+            else:
+                d_check_out_time = string_to_datetime(row_d['check_out_time'])
+    
+            in_risk_since = min(c_check_out_time, d_check_out_time)
+            if row_d['author_id'] not in users_reached.keys():
+                users_reached[row_d['author_id']] = in_risk_since
+            else:
+                users_reached[row_d['author_id']] = max(in_risk_since, users_reached[row_d['author_id']])
+
+    informed_users = []
+    informed_users_id = []
+    c = db.cursor()
+    c.execute('SELECT * FROM user WHERE id IN (%s) AND is_infected = 0' % placeholders(len(users_reached)),
+        list(users_reached.keys()))
+    for row_c in c:
+        if row_c['being_in_risk_since'] is None or string_to_datetime(row_c['being_in_risk_since']) < users_reached[row_c['id']]:
+            informed_users.append(dict(row_c))
+            informed_users_id.append(row_c['id'])
+            db.execute('UPDATE user SET being_in_risk_since = ? WHERE id = ?',
+                (datetime_to_string(users_reached[row_c['id']]), row_c['id'])
+            )
     db.execute(
         'UPDATE user SET is_infected = 1, being_in_risk_since = NULL'
         ' WHERE id = ?',
         (user_id,)
     )
     db.commit()
+    return informed_users
 
 def remove_infection(user_id):
     """Update tables with discharge.
@@ -148,3 +193,8 @@ def remove_infection(user_id):
         (user_id,)
     )
     db.commit()
+
+def placeholders(amount):
+    """Get placeholders for SQL query.
+    """
+    return ', '.join('?' * amount)
