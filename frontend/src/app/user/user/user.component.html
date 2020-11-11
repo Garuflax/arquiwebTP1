@@ -1,16 +1,24 @@
-<p>user works!</p>
+<ul>
+
+<li>
 <nav>
   <a routerLink="manage/"> Manejar locaciones </a>
 </nav>
+</li>
+<li>
 
 <nav *ngIf="has_to_checkin; then thenCheckBlock else elseCheckBlock"></nav>
 <ng-template #thenCheckBlock>  <a routerLink="checkin/"> Checkin </a> </ng-template>
 <ng-template #elseCheckBlock>  <a routerLink="checkout/"> Checkout </a> </ng-template>
+</li>
+
+</ul>
+
 
 <div *ngIf="!is_infected">
-    <button (click)="informInfection()">Informar contagio</button>
+    <button  class="buttonContagio" (click)="informInfection()">Informar contagio</button>
 </div>
 
 <div *ngIf="is_infected">
-    <button (click)="informDischarge()">Informar alta</button>
+    <button  class="buttonAlta" (click)="informDischarge()">Informar alta</button>
 </div>
