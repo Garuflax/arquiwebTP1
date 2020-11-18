@@ -36,6 +36,8 @@ def create_app(test_config=None):
     def check_if_token_is_revoked(decrypted_token):
         jti = decrypted_token['jti']
         entry = revoked_store.get(jti)
+        if entry is None:
+            return True
         return entry == 'true'
 
 

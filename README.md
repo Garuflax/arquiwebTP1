@@ -10,11 +10,13 @@
 ### Backend
 
 * Python3
+* redis-server: correr `sudo apt install redis-server` en terminal
 * venv: correr `sudo apt install python3-venv` en terminal
 * flask_cors: `pip install flask-cors` en ambiente virtual
 * flask_jwt_extended: `pip install Flask-JWT-Extended` en ambiente virtual
 * flask_qrcode: `pip install flask_qrcode` en ambiente virtual
 * flask_mail: `pip install Flask-Mail` en ambiente virtual
+* redis: `pip install redis` en ambiente virtual
 * pytest: `pip install pytest` en ambiente virtual
 * coverage: `pip install coverage` en ambiente virtual
 
