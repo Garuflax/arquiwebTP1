@@ -1,10 +1,16 @@
 import os
+import redis
 
+from datetime import timedelta
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 
+ACCESS_EXPIRES = timedelta(minutes=15)
+# Setup our redis connection for storing the blacklisted tokens
+revoked_store = redis.StrictRedis(host='localhost', port=6379, db=0,
+                                      decode_responses=True)
 
 def create_app(test_config=None):
     # create and configure the app
@@ -13,8 +19,24 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'yeabackend.sqlite'),
     )
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
+    app.config['JWT_BLACKLIST_ENABLED'] = True
+    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
     CORS(app)
-    JWTManager(app)
+    jwt = JWTManager(app)
+
+    # Create our function to check if a token has been blacklisted. In this simple
+    # case, we will just store the tokens jti (unique identifier) in redis
+    # whenever we create a new token (with the revoked status being 'false'). This
+    # function will return the revoked status of a token. If a token doesn't
+    # exist in this store, we don't know where it came from (as we are adding newly
+    # created tokens to our store with a revoked status of 'false'). In this case
+    # we will consider the token to be revoked, for safety purposes.
+    @jwt.token_in_blacklist_loader
+    def check_if_token_is_revoked(decrypted_token):
+        jti = decrypted_token['jti']
+        entry = revoked_store.get(jti)
+        return entry == 'true'
 
 
     app.config["MAIL_SERVER"] = "smtp.gmail.com"

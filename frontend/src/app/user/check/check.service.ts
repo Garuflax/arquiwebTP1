@@ -19,12 +19,12 @@ export class CheckService {
   constructor(private http: HttpClient) {}
 
   /** POST checkin to the server */
-  checkin(qr_result) {
+  checkin(qr_result: Number) {
     return this.http.post(this.checkinUrl, {location_id:qr_result}, this.httpOptions)
   }
 
   /** POST checkout to the server */
-  checkout(qr_result) {
+  checkout(qr_result: Number) {
     return this.http.post(this.checkoutUrl, {location_id:qr_result}, this.httpOptions)
   }
 

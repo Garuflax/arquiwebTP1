@@ -32,7 +32,7 @@ export class CheckComponent implements OnInit {
 
     // Si el usuario no hizo checkin, hace checkin. Va a location/detail/resultQR
     if (this.has_to_checkin){
-      this.checkService.checkin(this.qrResult)
+      this.checkService.checkin(Number(this.qrResult))
       .subscribe( 
         (response) => {
           this.message = response["message"]
@@ -47,7 +47,7 @@ export class CheckComponent implements OnInit {
     }
     // Si el usuario ya hizo checkin, hace checkout. Vuelve a user
     else{
-      this.checkService.checkout(this.qrResult)
+      this.checkService.checkout(Number(this.qrResult))
       .subscribe( 
         (response) => {
           this.message = response["message"]

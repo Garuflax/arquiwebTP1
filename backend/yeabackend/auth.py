@@ -7,11 +7,13 @@ from flask import (
 
 from flask_jwt_extended import (
     create_access_token, get_jwt_identity,
-    verify_jwt_in_request, jwt_required
+    verify_jwt_in_request, jwt_required,
+    get_jti, get_raw_jwt
 )
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from yeabackend import (revoked_store, ACCESS_EXPIRES)
 from yeabackend.db_access import (get_user_by_username, add_user)
 from yeabackend.request_utils import get_fields
 
@@ -48,8 +50,16 @@ def login():
         error = 'Incorrect password.'
 
     if error is None:
-        access_token = create_access_token(identity=user['id'],expires_delta=False)
-        #refresh_token = create_refresh_token(identity=user['id'])
+        access_token = create_access_token(identity=user['id'])
+        
+        # Store the tokens in redis with a status of not currently revoked. We
+        # can use the `get_jti()` method to get the unique identifier string for
+        # each token. We can also set an expires time on these tokens in redis,
+        # so they will get automatically removed after they expire. We will set
+        # everything to be automatically removed shortly after the token expires
+        access_jti = get_jti(encoded_token=access_token)
+        revoked_store.set(access_jti, 'false', ACCESS_EXPIRES * 1.2)
+
         return jsonify(
             message='Authenticated succesfully.',
             access_token=access_token
@@ -62,6 +72,7 @@ def login():
 @bp.route('/logout', methods=['DELETE'])
 @jwt_required
 def logout():
-    #TODO Eliminar token
+    jti = get_raw_jwt()['jti']
+    revoked_store.set(jti, 'true', ACCESS_EXPIRES * 1.2)
     return jsonify(
             message='Logged out succesfully.')

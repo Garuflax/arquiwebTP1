@@ -77,3 +77,6 @@ def test_logout(client, auth):
 
     response = auth.logout(access_headers)
     assert response.status_code == 200
+
+    response = auth.logout(access_headers)
+    assert response.status_code == 401
