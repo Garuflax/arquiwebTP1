@@ -40,7 +40,7 @@ def location(id):
 @bp.route('/all', methods=['GET'])
 @jwt_required
 def all():
-        
+      
     return jsonify(locations=get_locations())
 
 @bp.route("/<int:id>/qrcode", methods=["GET"])

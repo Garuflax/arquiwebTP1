@@ -1,42 +1,30 @@
 <p>location-manager works!</p>
 
-<form [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)">
+<form class="location-form" [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)">
 
-    <div>
-        <label for="name">
-          Name
-      </label>
-      <input type="text" formControlName="name">
-  </div>
+  <mat-form-field class="example-full-width">
+    <mat-label for="name">Name</mat-label>
+    <input matInput placeholder="Name" formControlName="name">
+  </mat-form-field>
 
-  <div>
-    <label for="maximum_capacity">
-      Capacidad
-  </label>
-  <input type="text" formControlName="maximum_capacity">
-</div>
+  <mat-form-field class="example-full-width">
+    <mat-label for="maximum_capacity">Maximum Capacity</mat-label>
+    <input matInput placeholder="Max Capacity" formControlName="maximum_capacity">
+  </mat-form-field>
 
-<div>
-    <label for="latitude">
-      Latitud
-  </label>
-  <input type="text" formControlName="latitude">
-</div>
+  <mat-form-field class="example-full-width">
+    <mat-label for="latitude">Latitud</mat-label>
+    <input matInput placeholder="Latitud" formControlName="latitude">
+  </mat-form-field>
 
-<div>
-    <label for="longitude">
-      Longitud
-  </label>
-  <input type="text" formControlName="longitude">
-</div>
-
-<button class="button" type="submit">Agregar locación</button>
+  <mat-form-field class="example-full-width">
+    <mat-label for="longitude">Longitud</mat-label>
+    <input matInput placeholder="Longitud" formControlName="longitude">
+  </mat-form-field>
 
 
-<ul>
-  <li>
-<nav>
+  <button type="submit" mat-raised-button>Agregar local </button>
+
+</form>
+
 <a routerLink="/location/all">Ver todas las locaciones</a>
-</nav>
-</li>
-</ul>

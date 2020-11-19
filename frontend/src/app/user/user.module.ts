@@ -13,6 +13,14 @@ import { AdminModule } from '../admin/admin.module';
 import { AdminComponent } from '../admin/admin/admin.component';
 import { AdminDashboardComponent } from '../admin/admin-dashboard/admin-dashboard.component';
 
+// Angular Stuff
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';  
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card'; 
+
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [UserComponent, CheckComponent, LocationManagerComponent, AlertComponent],
@@ -21,7 +29,14 @@ import { AdminDashboardComponent } from '../admin/admin-dashboard/admin-dashboar
     UserRoutingModule,
     ZXingScannerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    // Angular Stuff
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatCardModule,
+    FlexLayoutModule,
+    MatToolbarModule
   ]
 })
 export class UserModule { }

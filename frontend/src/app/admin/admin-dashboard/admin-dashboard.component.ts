@@ -11,6 +11,7 @@ export class AdminDashboardComponent implements OnInit {
 
   locations_data;
   users_data;
+  number_of_infected;
   number_of_locations;
   number_of_users;
 
@@ -24,7 +25,7 @@ export class AdminDashboardComponent implements OnInit {
       .subscribe( 
         (data) => {
           this.locations_data = data;
-          this.number_of_locations = Object.keys(data).length;
+          this.number_of_locations = data["locations"].length;
         }
     )
 
@@ -33,7 +34,13 @@ export class AdminDashboardComponent implements OnInit {
         (data) => {
           this.users_data = data;
           this.number_of_users = Object.keys(data).length;
-          ;
+          // this.number_of_infected = 0;
+          this.number_of_infected = Object.keys(data).filter(user => data[user]["is_infected"]).length
+          // for (var i=0; i<Object.keys(data).length; i++){
+          //   if (data[i]["is_infected"]){
+          //     this.number_of_infected ++;
+          //   }
+          // }
         }
     )
 
