@@ -9,7 +9,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 export class AdminService {
 
-  private locationsDataUrl = 'http://127.0.0.1:5000/admin/locations';
+  private locationsDataUrl = 'http://127.0.0.1:5000/location/all';
   private usersDataUrl = 'http://127.0.0.1:5000/admin/users';
 
   httpOptions = {

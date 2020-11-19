@@ -13,8 +13,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { UserModule } from './user/user.module';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -33,6 +36,8 @@ export function tokenGetter() {
     UserModule,
     AppRoutingModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MatToolbarModule
     // JwtModule.forRoot({
     //   config:{
     //     throwNoTokenError: true,

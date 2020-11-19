@@ -5,7 +5,13 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
 import { AuthModule } from './../auth/auth.module';
 import { LocationModule } from './../location/location.module';
+import { MatCardModule } from '@angular/material/card';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+
+
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+
 
 
 
@@ -15,8 +21,9 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     CommonModule,
     AdminRoutingModule,
     LocationModule,
-    AuthModule
-
+    AuthModule,
+    MatCardModule,
+    FlexLayoutModule
   ]
 })
 export class AdminModule { }
