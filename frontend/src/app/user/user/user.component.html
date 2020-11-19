@@ -7,6 +7,8 @@
 
         <button *ngIf="is_infected" mat-raised-button (click)="informDischarge()">INFORMAR ALTA</button>
         <button *ngIf="!is_infected" mat-raised-button (click)="informInfection()">INFORMAR CONTAGIO</button>
+        <button mat-raised-button routerLink="manage/">MANAGE LOCATIONS</button>
+
       </form>
   </mat-card>
 </div>
