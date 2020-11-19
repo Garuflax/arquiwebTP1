@@ -4,17 +4,20 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { MenuComponent } from './menu/menu.component';
+import { LogOutComponent } from './log-out/log-out.component';
 
 
 @NgModule({
   declarations: [
-    MenuComponent
+    MenuComponent,
+    LogOutComponent
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+  exports: [LogOutComponent]
 })
 export class AuthModule { }

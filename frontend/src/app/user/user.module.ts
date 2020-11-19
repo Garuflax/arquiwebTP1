@@ -9,6 +9,7 @@ import { CheckComponent } from './check/check.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { LocationManagerComponent } from './location-manager/location-manager.component';
 import { AlertComponent } from './alert/alert.component';
+import { AuthModule } from './../auth/auth.module';
 import { AdminModule } from '../admin/admin.module';
 import { AdminComponent } from '../admin/admin/admin.component';
 import { AdminDashboardComponent } from '../admin/admin-dashboard/admin-dashboard.component';
@@ -21,7 +22,8 @@ import { AdminDashboardComponent } from '../admin/admin-dashboard/admin-dashboar
     UserRoutingModule,
     ZXingScannerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AuthModule
   ]
 })
 export class UserModule { }
