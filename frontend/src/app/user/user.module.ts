@@ -13,6 +13,7 @@ import { AuthModule } from './../auth/auth.module';
 import { AdminModule } from '../admin/admin.module';
 import { AdminComponent } from '../admin/admin/admin.component';
 import { AdminDashboardComponent } from '../admin/admin-dashboard/admin-dashboard.component';
+import { LocationModule } from '../location/location.module'
 
 // Flex
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -36,6 +37,7 @@ import {MatIconModule} from '@angular/material/icon';
     FormsModule,
     ReactiveFormsModule,
     AuthModule,
+    LocationModule,
     // Angular Stuff
     MatInputModule,
     MatFormFieldModule,
