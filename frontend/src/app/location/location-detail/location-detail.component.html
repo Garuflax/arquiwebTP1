@@ -4,9 +4,10 @@
         <div fxLayoutAlign="stretch" fxLayout="column">
             <h2>Maximum Capacity: {{ maximum_capacity }}</h2>
             <h2>People Inside: {{ people_inside }}</h2>
-            <h2>Author Id: {{ author_id }}</h2>
+            <h2 *ngIf="is_author">Location is yours</h2>
+            <h2 *ngIf="!is_author">Location is not yours</h2>
 
-            <button mat-raised-button (click)="onDownloadQr()">DOWNLOAD QR</button>
+            <button *ngIf="is_author" mat-raised-button (click)="onDownloadQr()">DOWNLOAD QR</button>
 
         </div>
     </mat-card>
