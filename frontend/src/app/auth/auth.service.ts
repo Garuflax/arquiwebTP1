@@ -37,10 +37,7 @@ export class AuthService {
     /** POST login to the server */
     login(form: LogInForm): Observable<LogInResponse> {
         const url = `${this.authUrl}/login`;
-        return this.http.post<LogInResponse>(url, form, this.httpOptions)
-        .pipe(
-            catchError(this.handleError<LogInResponse>('login'))
-            );
+        return this.http.post<LogInResponse>(url, form, this.httpOptions);
     }
 
     /** logout from the server */

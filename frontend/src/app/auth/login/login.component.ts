@@ -12,6 +12,8 @@ import { AuthService } from '../auth.service';
 export class LoginComponent implements OnInit {
 
   loginForm;
+  isLoginFailed = false;
+  errorMessage = '';
 
   constructor(
     private router: Router,
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(userData) {
+    this.isLoginFailed = false;
     this.authService.login(userData)
     .subscribe(response => {
         localStorage.setItem('accessToken', response.access_token);
@@ -42,7 +45,11 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/user']);
             }
             });
-        });
+        }, err => {
+          this.isLoginFailed = true;
+          this.errorMessage = err.error.message + " " + err.error.error;
+        }
+        );
 
     this.loginForm.reset();
 }
