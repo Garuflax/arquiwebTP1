@@ -7,8 +7,7 @@ import { AuthModule } from './../auth/auth.module';
 import { LocationModule } from './../location/location.module';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
-
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
@@ -23,7 +22,8 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     LocationModule,
     AuthModule,
     MatCardModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatToolbarModule
   ]
 })
 export class AdminModule { }

@@ -1,29 +1,21 @@
-<!-- <h1>Admin Dashboard</h1> -->
-<!-- <br>
-<br>
-<h2>Locations</h2>
-<p>Cantidad de locales: {{ number_of_locations }}</p>
-<p>{{ locations_data | json }}</p>
-<br>
-<h2>Users</h2>
-<p>Cantidad de usuarios : {{ number_of_users }}</p>
-<p>"Numero de infectados: "</p>
-<p>{{ users_data | json }}</p> -->
-
 <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="30px">
     <mat-card class="stats-card" fxFlex="25" style="height: 200px;text-align: center;">
-        <h2>Infectados {{ number_of_infected }}</h2>
+        <h2 style="font-size: xxx-large;">{{ number_of_infected }}</h2>
+        <h2 style="font-size: x-large;">INFECTADOS</h2>
     </mat-card>
 
-    <mat-card class="stats-card" fxFlex="25" style="height: 200px;text-align: center;">
-        <h2>En riesgo {{ number_of_in_risk }}</h2>
+    <mat-card class="stats-card" fxFlex="25" style="height: 200px;text-align: center;" >
+        <h2 style="font-size: xxx-large;">{{ number_of_in_risk }}</h2>
+        <h2 style="font-size: x-large;">EN RIESGO</h2>
     </mat-card>
     
     <mat-card class="stats-card" fxFlex="25" style="height: 200px;text-align: center;">
-        <h2>Cantidad de locales {{ number_of_locations }}</h2>
+            <h2 style="font-size: xxx-large;"> {{ number_of_locations }}</h2>
+            <h2 style="font-size: x-large;">LOCACIONES</h2>
     </mat-card>
     
     <mat-card class="stats-card" fxFlex="25" style="height: 200px;text-align: center;">
-        <h2> Cantidad de usuarios {{ number_of_users }} </h2>
+        <h2 style="font-size: xxx-large;"> {{ number_of_users }} </h2>
+        <h2 style="font-size: x-large;">USUARIOS</h2>
     </mat-card>
 </div>

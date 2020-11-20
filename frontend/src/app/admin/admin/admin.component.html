@@ -1,9 +1,15 @@
-<app-log-out></app-log-out>
 
-<h1>Administrator Site</h1>
+<div fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="75">
+        <mat-toolbar color="primary"><span class="span"> <strong>ADMINISTRADOR</strong> </span></mat-toolbar>
+        <div fxLayoutAlign="stretch" fxLayout="column">
+            <app-admin-dashboard style="margin-top: 30px;"></app-admin-dashboard>
 
-<app-admin-dashboard></app-admin-dashboard>
+            <app-locations style="margin-top: 30px;"></app-locations>
+            
+            <app-log-out style="margin-top: 30px;"></app-log-out>
 
-<h2>Locations using this app: </h2>
+        </div>
+    </mat-card>
+</div>
 
-<app-locations></app-locations>
