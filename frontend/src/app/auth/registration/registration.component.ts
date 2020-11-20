@@ -11,6 +11,7 @@ import { AuthService } from '../auth.service';
 })
 export class RegistrationComponent implements OnInit {
   registerForm;
+  message: string;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -29,11 +30,14 @@ export class RegistrationComponent implements OnInit {
 
   register(userData) {
     this.authService.register(userData)
-    .subscribe(response => console.log(response));
+    .subscribe(response => {
+      this.message = response["message"];
+      if (response.created) {
+        setTimeout( () => this.router.navigate(['/auth']), 5000);
+      }
+      });
 
     this.registerForm.reset();
-
-    console.log('Registered successfully?', userData);
   }
 
 

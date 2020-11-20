@@ -35,12 +35,12 @@ export class CheckComponent implements OnInit {
       this.checkService.checkin(Number(this.qrResult))
       .subscribe( 
         (response) => {
-          this.message = response["message"]
+          this.message = response["message"];
           if (response["success"]){
-            setTimeout( () => this.router.navigate(['/location/detail', Number(result)]),5000)
+            setTimeout( () => this.router.navigate(['/location/detail', Number(result)]), 5000);
           }
           else{
-            setTimeout( () => this.router.navigate(['/user']), 5000)
+            setTimeout( () => this.router.navigate(['/user']), 5000);
           }
         }
     )
@@ -50,8 +50,8 @@ export class CheckComponent implements OnInit {
       this.checkService.checkout(Number(this.qrResult))
       .subscribe( 
         (response) => {
-          this.message = response["message"]
-          setTimeout(() => this.router.navigate(['/user']), 5000)
+          this.message = response["message"];
+          setTimeout(() => this.router.navigate(['/user']), 5000);
         }
       )
     }
