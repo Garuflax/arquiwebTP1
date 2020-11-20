@@ -21,7 +21,7 @@ export class LocationDetailComponent implements OnInit {
   constructor(
     private getStatusService: GetStatusService,
     private locationsService: LocationsService,
-    private LocationDetailService: LocationDetailService,
+    private locationDetailService: LocationDetailService,
     private router: Router,
     private route: ActivatedRoute,
     ){}
@@ -47,7 +47,7 @@ export class LocationDetailComponent implements OnInit {
 
   onDownloadQr() {
     console.log("ANTES DE LLAMAR AL SERVICIO")
-    this.LocationDetailService.get_qr(this.location_id).subscribe(
+    this.locationDetailService.get_qr(this.location_id).subscribe(
       data => {
         saveAs(data, `qr.png`)
       }
