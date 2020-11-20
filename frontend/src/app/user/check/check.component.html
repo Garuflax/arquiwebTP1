@@ -1,9 +1,21 @@
-<h1>{{ message }}</h1>
-<h1 *ngIf="has_to_checkin; then thenBlock else elseBlock"></h1>
-<ng-template #thenBlock> CHECKIN </ng-template>
-<ng-template #elseBlock> CHECKOUT </ng-template>
-<p>Please scan the location's QR code </p>
-<zxing-scanner [(device)]="currentDevice" 
-    (scanSuccess)="onCodeResult($event)"
-    [tryHarder]="tryHarder">
-</zxing-scanner>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+    <mat-card fxFlex="40">
+        <mat-toolbar color="primary">
+            <span *ngIf="has_to_checkin" class="span">
+                CHECKIN
+            </span>
+            <span *ngIf="!has_to_checkin" class="span">
+                CHECKOUT
+            </span>
+        </mat-toolbar>
+        <div fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
+            <h1>{{ message }}</h1>
+            <h1 style="text-align: center;">PLEASE SCAN THE LOCATION'S QR </h1>
+            <zxing-scanner 
+                [(device)]="currentDevice" 
+                (scanSuccess)="onCodeResult($event)"
+                [tryHarder]="tryHarder">
+            </zxing-scanner>
+        </div>
+    </mat-card>
+</div>
