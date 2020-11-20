@@ -1,3 +1,4 @@
+-- SQLite
 INSERT INTO user (username, password, email, is_admin)
 VALUES
   ('usertest', 'pbkdf2:sha256:150000$6tjsUGUN$fff35601e39010f1ed7b8dc3b07bac32a8d5af57b2f14cce1d4d953445549a1f', 'user@test.com', 0),

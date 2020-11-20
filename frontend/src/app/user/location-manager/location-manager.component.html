@@ -1,30 +1,26 @@
-<p>location-manager works!</p>
+<div fxLayoutAlign="center center" fxFlexFill class="main-div">
+  <mat-card fxFlex="25">
+      <mat-toolbar color="primary">Agregar local</mat-toolbar>
+      <form [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
+          
+          <mat-form-field>
+            <input matInput placeholder="Name" formControlName="name">
+          </mat-form-field>
+        
+          <mat-form-field>
+            <input matInput placeholder="Max Capacity" formControlName="maximum_capacity">
+          </mat-form-field>
 
-<form class="location-form" [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)">
+          <mat-form-field>
+            <input matInput placeholder="Latitud" formControlName="latitude">
+          </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <mat-label for="name">Name</mat-label>
-    <input matInput placeholder="Name" formControlName="name">
-  </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Longitud" formControlName="longitude">
+          </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <mat-label for="maximum_capacity">Maximum Capacity</mat-label>
-    <input matInput placeholder="Max Capacity" formControlName="maximum_capacity">
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width">
-    <mat-label for="latitude">Latitud</mat-label>
-    <input matInput placeholder="Latitud" formControlName="latitude">
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width">
-    <mat-label for="longitude">Longitud</mat-label>
-    <input matInput placeholder="Longitud" formControlName="longitude">
-  </mat-form-field>
-
-
-  <button type="submit" mat-raised-button>Agregar local </button>
-
-</form>
-
-<a routerLink="/location/all">Ver todas las locaciones</a>
+          <button mat-raised-button type="submit">Agregar Local</button>
+      </form>
+      <a routerLink="/location/all">Ver todas las locaciones</a>
+  </mat-card>
+</div>

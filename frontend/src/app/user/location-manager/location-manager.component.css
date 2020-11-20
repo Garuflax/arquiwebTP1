@@ -1,9 +1,7 @@
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
+.main-div mat-card {
+    padding: 0px;
 }
 
-.example-full-width {
-  width: 100%;
+.login-form {
+    padding: 20px;
 }
