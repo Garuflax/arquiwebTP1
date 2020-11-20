@@ -1,6 +1,11 @@
 <div fxLayoutAlign="center center" fxFlexFill class="main-div">
   <mat-card fxFlex="25">
-      <mat-toolbar color="primary">Agregar local</mat-toolbar>
+      <mat-toolbar color="primary">
+        <span class="span">LOCATION MANAGER</span>
+        <button mat-icon-button>
+          <mat-icon routerLink="/user">arrow_back</mat-icon>
+        </button>
+      </mat-toolbar>
       <form [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
           
           <mat-form-field>
@@ -20,7 +25,7 @@
           </mat-form-field>
 
           <button mat-raised-button type="submit">Agregar Local</button>
+          <a style="margin-top: 20px;" routerLink="/location/all">Ver todas las locaciones</a>
       </form>
-      <a routerLink="/location/all">Ver todas las locaciones</a>
   </mat-card>
 </div>

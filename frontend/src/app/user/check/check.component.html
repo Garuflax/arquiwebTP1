@@ -7,6 +7,9 @@
             <span *ngIf="!has_to_checkin" class="span">
                 CHECKOUT
             </span>
+            <button mat-icon-button>
+                <mat-icon routerLink="/user">arrow_back</mat-icon>
+            </button>
         </mat-toolbar>
         <div fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
             <h1>{{ message }}</h1>

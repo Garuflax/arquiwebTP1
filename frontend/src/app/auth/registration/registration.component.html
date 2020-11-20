@@ -1,6 +1,6 @@
 <div fxLayoutAlign="center center" fxFlexFill class="main-div">
     <mat-card fxFlex="25">
-        <mat-toolbar color="primary">Registration</mat-toolbar>
+        <mat-toolbar color="primary"><span class="span"> REGISTRATION </span></mat-toolbar>
         <form [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
             <mat-form-field>
               <input matInput formControlName="username" placeholder="User">
@@ -15,7 +15,7 @@
             </mat-form-field>
 
             <button mat-raised-button type="submit">Register</button>
-            
+
             <small style="margin-top: 20px;">Already a member? <a routerLink="/login">click here</a> </small>
         </form>
     </mat-card>

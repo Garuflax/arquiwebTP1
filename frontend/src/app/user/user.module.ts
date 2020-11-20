@@ -14,14 +14,18 @@ import { AdminModule } from '../admin/admin.module';
 import { AdminComponent } from '../admin/admin/admin.component';
 import { AdminDashboardComponent } from '../admin/admin-dashboard/admin-dashboard.component';
 
-// Angular Stuff
+// Flex
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+// Angular Material Stuff
+
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';  
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card'; 
 
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [UserComponent, CheckComponent, LocationManagerComponent, AlertComponent],
@@ -38,7 +42,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatButtonModule,
     MatCardModule,
     FlexLayoutModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule
   ]
 })
 export class UserModule { }
