@@ -1,7 +1,13 @@
-<h1>{{ name }}</h1>
+<div fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="25">
+        <mat-toolbar color="primary"><span class="span"> {{ name | uppercase }} </span></mat-toolbar>
+        <div fxLayoutAlign="stretch" fxLayout="column">
+            <h2>Maximum Capacity: {{ maximum_capacity }}</h2>
+            <h2>People Inside: {{ people_inside }}</h2>
+            <h2>Author Id: {{ author_id }}</h2>
 
-<p>Maximum Capacity:  {{ maximum_capacity }}</p>
-<p>People Inside: {{ people_inside }}</p>
-<p>Author Id: {{ author_id }}</p>
+            <button mat-raised-button (click)="onDownloadQr()">DOWNLOAD QR</button>
 
-<button (click)="onDownloadQr()">Download QR</button>
+        </div>
+    </mat-card>
+</div>
