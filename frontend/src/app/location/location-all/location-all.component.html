@@ -2,8 +2,7 @@
     <agm-marker [latitude]="location.latitude" [longitude]="location.longitude" *ngFor="let location of locations; let i=index">
         <agm-info-window>
             <h2 routerLink="/location/detail/{{location.id}}">{{ location.name }}</h2>
-            <h3>{{ location.maximum_capacity }}</h3>
-            <h3>{{ location.people_inside }}</h3>
+            <h3>{{ location.people_inside }}/{{ location.maximum_capacity }}</h3>
         </agm-info-window>
     </agm-marker>
 </agm-map>
