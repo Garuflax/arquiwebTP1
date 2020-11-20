@@ -19,7 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
-
+import { MatCardModule } from '@angular/material/card';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -40,15 +41,9 @@ export function tokenGetter() {
     HttpClientModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatIconModule
-
-    // JwtModule.forRoot({
-    //   config:{
-    //     throwNoTokenError: true,
-    //     tokenGetter,
-    //     allowedDomains: ['http://localhost:5000'],
-    //   }
-    // }),
+    MatIconModule,
+    MatCardModule,
+    FlexLayoutModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
