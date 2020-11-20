@@ -18,6 +18,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+
 
 export function tokenGetter() {
   return localStorage.getItem("access_token");
@@ -37,7 +39,9 @@ export function tokenGetter() {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule
+
     // JwtModule.forRoot({
     //   config:{
     //     throwNoTokenError: true,
