@@ -6,11 +6,11 @@
         <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
             
             <mat-form-field>
-              <input formControlName="username" matInput placeholder="User">
+              <input formControlName="username" matInput placeholder="User" required>
             </mat-form-field>
           
             <mat-form-field>
-                <input formControlName="password" matInput type="password" placeholder="Password">
+                <input formControlName="password" matInput type="password" placeholder="Password" required>
             </mat-form-field>
             <button mat-raised-button type="submit">Login</button>
 
