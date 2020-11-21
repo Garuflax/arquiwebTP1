@@ -2,19 +2,19 @@
 
 <div fxLayoutAlign="center center" fxFlexFill class="main-div">
     <mat-card fxFlex="25">
-        <mat-toolbar color="primary"><span class="span"> LOGIN </span></mat-toolbar>
+        <mat-toolbar color="primary"><span class="span"> INICIO DE SESIÓN </span></mat-toolbar>
         <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
             
             <mat-form-field>
-              <input formControlName="username" matInput placeholder="User" required>
+              <input formControlName="username" matInput placeholder="Usuario">
             </mat-form-field>
           
             <mat-form-field>
-                <input formControlName="password" matInput type="password" placeholder="Password" required>
+                <input formControlName="password" matInput type="password" placeholder="Contraseña">
             </mat-form-field>
-            <button mat-raised-button type="submit">Login</button>
+            <button mat-raised-button type="submit">Iniciar sesión</button>
 
-            <small style="margin-top: 20px;">Not a member? <a routerLink="/registration">click here</a> </small>
+            <small style="margin-top: 20px;">¿No tiene una cuenta? <a routerLink="/registration">Regístrate</a> </small>
 
         </form>
     </mat-card>

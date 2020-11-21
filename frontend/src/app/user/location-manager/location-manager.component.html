@@ -1,7 +1,7 @@
 <div fxLayoutAlign="center center" fxFlexFill class="main-div">
   <mat-card fxFlex="50">
       <mat-toolbar color="primary">
-        <span class="span">LOCATION MANAGER</span>
+        <span class="span">MENÚ DE LOCACIÓN</span>
         <button mat-icon-button>
           <mat-icon routerLink="/user">arrow_back</mat-icon>
         </button>
@@ -9,11 +9,11 @@
       <form [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)" fxLayoutAlign="stretch" fxLayout="column" class="login-form" style="text-align:center;">
           
           <mat-form-field>
-            <input matInput placeholder="Name" formControlName="name">
+            <input matInput placeholder="Nombre" formControlName="name">
           </mat-form-field>
         
           <mat-form-field>
-            <input matInput placeholder="Max Capacity" formControlName="maximum_capacity">
+            <input matInput placeholder="Capacidad Máxima" formControlName="maximum_capacity">
           </mat-form-field>
 
           <mat-form-field>
@@ -24,9 +24,9 @@
             <input matInput placeholder="Longitud" formControlName="longitude">
           </mat-form-field>
 
-          <button mat-raised-button type="submit">Agregar Local</button>
+          <button mat-raised-button type="submit">Agregar Locación</button>
 
-        <h2 style="font-weight: bolder;margin-top: 10px;"> ALL LOCATIONS </h2>
+        <h2 style="font-weight: bolder;margin-top: 10px;"> LOCACIONES </h2>
         <app-locations style="margin-top: 10px;"></app-locations>
       </form>
         

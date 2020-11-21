@@ -13,7 +13,7 @@
         </mat-toolbar>
         <div fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
             <h1>{{ message }}</h1>
-            <h1 style="text-align: center;">PLEASE SCAN THE LOCATION'S QR </h1>
+            <h1 style="text-align: center;">POR FAVOR ESCANEE EL QR DE LA LOCACIÓN </h1>
             <zxing-scanner 
                 [(device)]="currentDevice" 
                 (scanSuccess)="onCodeResult($event)"

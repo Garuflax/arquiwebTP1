@@ -2,7 +2,7 @@ import os
 import redis
 
 from datetime import timedelta
-from flask import Flask
+from flask import (Flask, render_template)
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
@@ -63,11 +63,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello TODO: change for client at index.html
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
     from . import db
     db.init_app(app)
 
@@ -88,5 +83,9 @@ def create_app(test_config=None):
 
     from . import admin
     app.register_blueprint(admin.bp)
+
+    @app.route('/', methods=['GET'])
+    def root():
+        return render_template('index.html')
 
     return app

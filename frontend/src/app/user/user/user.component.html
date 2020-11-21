@@ -1,13 +1,13 @@
 <div fxLayoutAlign="center center" fxFlexFill class="main-div">
   <mat-card fxFlex="40">
-      <mat-toolbar color="primary"><span class="span">USER MANAGEMENT</span></mat-toolbar>
+      <mat-toolbar color="primary"><span class="span">MENÚ DE USUARIO</span></mat-toolbar>
       <form fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
         <button *ngIf="has_to_checkin" mat-raised-button routerLink="checkin/">CHECKIN</button>
         <button *ngIf="!has_to_checkin" mat-raised-button routerLink="checkout/">CHECKOUT</button>
 
         <button *ngIf="is_infected" mat-raised-button (click)="informDischarge()">INFORMAR ALTA</button>
         <button *ngIf="!is_infected" mat-raised-button (click)="informInfection()">INFORMAR CONTAGIO</button>
-        <button mat-raised-button routerLink="manage/">MANAGE LOCATIONS</button>
+        <button mat-raised-button routerLink="manage/">VER LOCACIONES</button>
         <app-log-out></app-log-out>
 
       </form>
