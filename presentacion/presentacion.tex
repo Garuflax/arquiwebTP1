@@ -49,8 +49,12 @@ Universidad de Buenos Aires}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Diagrama Entidad Relación}
-    \includegraphics[width=1.0\textwidth]{img/db-entities-with-types.png}
+    \frametitle{Decisiones de diseño}
+    \begin{itemize}\setlength\itemsep{1em}
+     \item En alta y baja de enfermedad no se informa la fecha, ya que no se utiliza en el servidor
+     \item Sesiones cortas
+     \item Solo se puede informar contagio fuera de la locación
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -62,9 +66,9 @@ Universidad de Buenos Aires}
     Ventajas:
     \begin{itemize}
     \item Microframework (no toma decisiones de diseño)
-    \item Soporte de extensiones que agregan funcionalidad (i.e. CORS, JWTManager, Mail)
+    \item Soporte de extensiones que agregan funcionalidad (i.e. CORS, JWTManager, Mail, QRcode)
     \item Python
-    \item MVT
+    \item Facilidad para testear %(viene con \textit{test_client} para testear la API)
     \end{itemize}
     
 
@@ -132,21 +136,33 @@ Universidad de Buenos Aires}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Angular Overview}
-    \begin{center}
-    \includegraphics[width=1.0\textwidth]{img/angular-overview.png}
-    \end{center}
+    \frametitle{Diagrama Entidad Relación}
+    \includegraphics[width=1.0\textwidth]{img/db-entities-with-types.png}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{Angular Overview}
+%    \begin{center}
+%    \includegraphics[width=1.0\textwidth]{img/angular-overview.png}
+%    \end{center}
 %    Together, a component and template define an Angular view.
 %
 %A decorator on a component class adds the metadata, including a pointer to the associated template.
 %Directives and binding markup in a component's template modify views based on program data and logic.
 %The dependency injector provides services to a component, such as the router service that lets you define navigation among views.
-\end{frame}
+%\end{frame}
 
 \begin{frame}
     \frametitle{Módulos angular}
     \begin{center}
     \includegraphics[width=1.0\textwidth]{img/angular-modules.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Navegación}
+    \begin{center}
+    \includegraphics[width=0.7\textwidth]{img/navegacion.png}
     \end{center}
 \end{frame}
 
@@ -160,25 +176,23 @@ Universidad de Buenos Aires}
 
 \begin{frame}
     \frametitle{Angular HttpInterceptor}
-    Decorator de requests http. Incrustar token en todas las request y redirigir en caso de error. Ya sea por estar vencido el token o no tener permiso de realizar la acción
-    \includegraphics[width=0.9\textwidth]{img/angular-httpinterceptor.png}
+    Decorator de requests http. Incrustar token en todas las request y redirigir en caso de error. Ya sea por estar vencido el token o no tener permiso de realizar la acción.
+    \includegraphics[width=0.9\textwidth]{img/angular-interceptor.png}
     
 \end{frame}
 
 \begin{frame}
-    \frametitle{Problemas tenidos}
-    \begin{itemize}
-    \item Al hacer el \textbf{build} de producción de la aplicación el código QR deja de funcionar
-    \item No se pudo agregar \textit{Redis} porque \textit{Heroku} pide tarjeta de credito para eso
-    \end{itemize}
-    
-\end{frame}
-
-\begin{frame}
-    \frametitle{JWT}
+    \frametitle{Angular Material}
     \begin{center}
-    \includegraphics[scale=0.5]{img/login-with-jwt.png}
+    \includegraphics[scale=0.3]{img/angular-material-logo.png}
     \end{center}
+    \begin{itemize}
+    \item Desarrollado por Google (sin fricción)
+    \item Fácil de usar
+    \item Alta calidad. Testeados para asegurar performance y fiabilidad
+    \item Buena documentación
+    \item Perdida de versatilidad
+    \end{itemize}
     
 \end{frame}
 
@@ -187,6 +201,24 @@ Universidad de Buenos Aires}
     \begin{center}
     \includegraphics[width=1.0\textwidth]{img/flask-modules.png}
     \end{center}
+\end{frame}
+
+%\begin{frame}
+%    \frametitle{Atributos de Calidad}
+%    \begin{itemize}
+%    \item Tests con 100\% de covertura del back-end utilizano \textit{pytest} y \textit{coverage}
+%    
+%    \end{itemize}
+%    
+%\end{frame}
+
+\begin{frame}
+    \frametitle{Problemas tenidos}
+    \begin{itemize}
+    \item Al hacer el \textbf{build} de producción de la aplicación el código QR dejó de funcionar
+    \item No se pudo agregar \textit{redis}. Este se usaba para el manejo del vencimiento de los tokens
+    \end{itemize}
+    
 \end{frame}
 
 
