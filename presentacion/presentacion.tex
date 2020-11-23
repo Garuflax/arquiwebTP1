@@ -49,8 +49,8 @@ Universidad de Buenos Aires}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Diagrama de ``clases''}
-    \includegraphics[width=1.0\textwidth]{img/db-entities.png}
+    \frametitle{Diagrama Entidad Relación}
+    \includegraphics[width=1.0\textwidth]{img/db-entities-with-types.png}
 \end{frame}
 
 \begin{frame}
@@ -65,6 +65,44 @@ Universidad de Buenos Aires}
     \includegraphics[scale=0.3]{img/flask-logo.png}\\
     Flask
     \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Otras tecnologías}
+%    \begin{itemize}
+%    \item Sqlite \includegraphics[scale=0.05]{img/sqlite-logo.png}
+%    \item Angular maps \includegraphics[scale=0.1]{img/angular-maps-logo.png}
+%    \item Heroku \includegraphics[scale=0.1]{img/heroku-logo.png}
+%    \end{itemize}
+    \begin{tabular}{c c}
+    Sqlite & \includegraphics[scale=0.1]{img/sqlite-logo.png} \\
+    Angular maps & \includegraphics[scale=0.2]{img/angular-maps-logo.png} \\
+    Heroku & \includegraphics[scale=0.2]{img/heroku-logo.png} \\
+    \end{tabular}
+\end{frame}
+
+\begin{frame}
+    \frametitle{JWT}
+    \begin{center}
+    \includegraphics[scale=0.5]{img/login-with-jwt.png}
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Angular HttpInterceptor}
+    Decorator de requests http. Incrustar token en todas las request y redirigir en caso de error. Ya sea por estar vencido el token o no tener permiso de realizar la acción
+    \includegraphics[width=0.9\textwidth]{img/angular-httpinterceptor.png}
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Problemas tenidos}
+    \begin{itemize}
+    \item Al hacer el \textbf{build} de producción de la aplicación el código QR deja de funcionar
+    \item No se pudo agregar \textit{Redis} porque \textit{Heroku} pide tarjeta de credito para eso
+    \end{itemize}
+    
 \end{frame}
 
 
