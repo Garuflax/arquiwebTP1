@@ -5,6 +5,7 @@ def get_fields(request, fields):
     and checking that it has the requested
     fields and are valid.
     """
+
     if not request.is_json:
         abort(400, 'Missing json.')
 
@@ -24,4 +25,5 @@ def extract_fields(json_data, fields):
         if not json_data[field]:
             abort(400, 'Invalid field: {0}.'.format(field))
         values.append(json_data[field])
+    
     return values

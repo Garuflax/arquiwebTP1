@@ -11,14 +11,26 @@
                 <mat-icon routerLink="/user">arrow_back</mat-icon>
             </button>
         </mat-toolbar>
-        <div fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
-            <h1>{{ message }}</h1>
+        <form fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
+            
+            <!-- Scanner QR -->
+            <!-- <h1>{{ message }}</h1>
             <h1 style="text-align: center;">POR FAVOR ESCANEE EL QR DE LA LOCACIÓN </h1>
             <zxing-scanner 
                 [(device)]="currentDevice" 
                 (scanSuccess)="onCodeResult($event)"
                 [tryHarder]="tryHarder">
-            </zxing-scanner>
-        </div>
+            </zxing-scanner> -->
+
+
+            <h1 style="text-align: center;">POR FAVOR INGRESE EL ID DE LA LOCACION </h1>
+
+            <mat-form-field>
+                <input matInput #boxLocationId (keyup.enter) ="onCodeResult(boxLocationId.value)">
+            </mat-form-field>
+            
+            <button mat-button disabled>{{ message }}</button>
+
+        </form>
     </mat-card>
 </div>

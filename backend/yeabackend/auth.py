@@ -38,8 +38,13 @@ def register():
 
 @bp.route('/login', methods=['POST'])
 def login():
-    (username, password) = get_fields(request,
-        ['username', 'password'])
+    print("Asd")
+
+    (username, password) = get_fields(request,['username', 'password'])
+
+    print("Asd")
+    print(username)
+    print(password)
 
     error = None
     user = get_user_by_username(username)

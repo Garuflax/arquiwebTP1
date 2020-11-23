@@ -1,6 +1,12 @@
 <div fxLayoutAlign="center center" fxFlexFill>
     <mat-card fxFlex="25">
-        <mat-toolbar color="primary"><span class="span"> {{ name | uppercase }} </span></mat-toolbar>
+        <mat-toolbar color="primary">
+            <span class="span">{{ name | uppercase }} </span>
+            <button mat-icon-button>
+                <mat-icon routerLink="/user">arrow_back</mat-icon>
+            </button>
+        </mat-toolbar>
+        
         <div fxLayoutAlign="stretch" fxLayout="column">
             <h2>Maximum Capacity: {{ maximum_capacity }}</h2>
             <h2>People Inside: {{ people_inside }}</h2>
