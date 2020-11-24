@@ -1,4 +1,8 @@
-<p>¡Usted está en riesgo de contagió!</p>
-<nav>
-  <a routerLink="/user"> Ir al menu </a>
-</nav>
+<div fxLayoutAlign="center center" fxFlexFill>
+  <mat-card fxFlex="50">
+      <mat-toolbar color="warn"><span class="span"> <strong>¡Usted está en riesgo de contagió!</strong> </span></mat-toolbar>
+      <div fxLayoutAlign="stretch" fxLayout="column">
+        <button style="margin-top: 20px;" mat-raised-button routerLink="/user">IR AL MENU</button>
+      </div>
+  </mat-card>
+</div>

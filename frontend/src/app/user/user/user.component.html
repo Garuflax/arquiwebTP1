@@ -2,11 +2,16 @@
   <mat-card fxFlex="40">
       <mat-toolbar color="primary"><span class="span">MENÚ DE USUARIO</span></mat-toolbar>
       <form fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
+        <ng-template >
+
+        </ng-template>
         <button *ngIf="has_to_checkin" mat-raised-button routerLink="checkin/">CHECKIN</button>
         <button *ngIf="!has_to_checkin" mat-raised-button routerLink="checkout/">CHECKOUT</button>
 
-        <button *ngIf="is_infected" mat-raised-button (click)="informDischarge()">INFORMAR ALTA</button>
-        <button *ngIf="!is_infected" mat-raised-button (click)="informInfection()">INFORMAR CONTAGIO</button>
+        <ng-template [ngIf]="has_to_checkin">
+          <button *ngIf="is_infected" mat-raised-button (click)="informDischarge()">INFORMAR ALTA</button>
+          <button *ngIf="!is_infected" mat-raised-button (click)="informInfection()">INFORMAR CONTAGIO</button>
+        </ng-template>
         <button mat-raised-button routerLink="manage/">VER LOCACIONES</button>
         <app-log-out></app-log-out>
 

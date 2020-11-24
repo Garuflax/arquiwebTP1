@@ -14,22 +14,16 @@
         <form fxLayoutAlign="stretch" fxLayoutGap="30px" fxLayout="column" class="login-form">
             
             <!-- Scanner QR -->
-            <!-- <h1>{{ message }}</h1>
             <h1 style="text-align: center;">POR FAVOR ESCANEE EL QR DE LA LOCACIÓN </h1>
-            <zxing-scanner 
-                [(device)]="currentDevice" 
-                (scanSuccess)="onCodeResult($event)"
-                [tryHarder]="tryHarder">
-            </zxing-scanner> -->
+            <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+            <button mat-button disabled>{{ message }}</button>
 
 
-            <h1 style="text-align: center;">POR FAVOR INGRESE EL ID DE LA LOCACION </h1>
-
+            <!-- <h1 style="text-align: center;">POR FAVOR INGRESE EL ID DE LA LOCACION </h1>
             <mat-form-field>
                 <input matInput #boxLocationId (keyup.enter) ="onCodeResult(boxLocationId.value)">
             </mat-form-field>
-            
-            <button mat-button disabled>{{ message }}</button>
+            <button mat-button disabled>{{ message }}</button> -->
 
         </form>
     </mat-card>
