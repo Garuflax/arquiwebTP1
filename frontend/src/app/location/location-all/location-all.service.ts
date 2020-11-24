@@ -19,11 +19,11 @@ export class LocationsService {
 
   /** GET location to the server */
   get_location(id : Number) {
-    return this.http.get(`https://yeacovid/location/${id}`)
+    return this.http.get(`https://yeacovid.herokuapp.com/location/${id}`)
   }
 
   get_locations() {
-    return this.http.get("https://yeacovid/location/all")
+    return this.http.get("https://yeacovid.herokuapp.com/location/all")
   }
 
 }

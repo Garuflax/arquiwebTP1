@@ -8,7 +8,7 @@ import { LocationForm } from './locationForm';
 })
 export class AddLocationService {
 
-  private locationCreateUrl = 'https://yeacovid/location/create';  // URL to web api
+  private locationCreateUrl = 'https://yeacovid.herokuapp.com/location/create';  // URL to web api
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

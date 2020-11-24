@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class InformService {
 
-  private informUrl = 'https://yeacovid/inform';  // URL to web api
+  private informUrl = 'https://yeacovid.herokuapp.com/inform';  // URL to web api
 
   httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })

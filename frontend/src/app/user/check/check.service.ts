@@ -9,8 +9,8 @@ import { catchError, retry } from 'rxjs/operators';
 
 export class CheckService {
 
-  private checkinUrl = 'https://yeacovid/checkin';
-  private checkoutUrl = 'https://yeacovid/checkout';
+  private checkinUrl = 'https://yeacovid.herokuapp.com/checkin';
+  private checkoutUrl = 'https://yeacovid.herokuapp.com/checkout';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

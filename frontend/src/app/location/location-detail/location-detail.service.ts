@@ -17,7 +17,7 @@ export class LocationDetailService {
   };
 
   get_qr(location_id: Number) {
-    const url = `https://yeacovid/location/${location_id}/qrcode`;
+    const url = `https://yeacovid.herokuapp.com/location/${location_id}/qrcode`;
     return this.http.get(url, {responseType: 'blob'}) 
 }
 }
