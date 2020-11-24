@@ -17,7 +17,7 @@ export class LocationDetailService {
   };
 
   get_qr(location_id: Number) {
-    const url = `http://127.0.0.1:5000/location/${location_id}/qrcode`;
+    const url = `https://yeacovid/location/${location_id}/qrcode`;
     return this.http.get(url, {responseType: 'blob'}) 
 }
 }

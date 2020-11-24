@@ -15,7 +15,7 @@ import { RegisterResponse } from './registerResponse';
 })
 export class AuthService {
 
-    private authUrl = 'http://127.0.0.1:5000/auth';  // URL to web api
+    private authUrl = 'https://yeacovid/auth';  // URL to web api
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })

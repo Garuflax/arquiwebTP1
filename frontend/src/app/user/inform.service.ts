@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class InformService {
 
-  private informUrl = 'http://127.0.0.1:5000/inform';  // URL to web api
+  private informUrl = 'https://yeacovid/inform';  // URL to web api
 
   httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })

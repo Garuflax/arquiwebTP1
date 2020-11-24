@@ -9,8 +9,8 @@ import { catchError, retry } from 'rxjs/operators';
 
 export class AdminService {
 
-  private locationsDataUrl = 'http://127.0.0.1:5000/location/all';
-  private usersDataUrl = 'http://127.0.0.1:5000/admin/users';
+  private locationsDataUrl = 'https://yeacovid/location/all';
+  private usersDataUrl = 'https://yeacovid/admin/users';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})

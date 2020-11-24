@@ -9,7 +9,7 @@ import { StatusResponse } from './statusResponse';
 })
 export class GetStatusService {
 
-  private getStatusUrl = 'http://127.0.0.1:5000/status';  // URL to web api
+  private getStatusUrl = 'https://yeacovid/status';  // URL to web api
 
   constructor(private http: HttpClient) { }
 
