@@ -46,13 +46,11 @@ export class LocationDetailComponent implements OnInit {
   }
 
   onDownloadQr() {
-    console.log("ANTES DE LLAMAR AL SERVICIO")
     this.locationDetailService.get_qr(this.location_id).subscribe(
       data => {
         saveAs(data, `qr.png`)
       }
       )
-    console.log("DESPUES DE LLAMAR AL SERVICIO")
   }
 
 }
