@@ -3,6 +3,7 @@ import { AgmCoreModule } from '@agm/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Feature from 'ol/Feature';
+import Overlay from 'ol/Overlay';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -24,30 +25,22 @@ import { LocationsService } from './location-all.service';
 })
 export class LocationsComponent implements OnInit {
 
-  map;
-
   constructor(private locationsService: LocationsService) { }
 
+  formatLandmark(id: number, name: string, maximum_capacity: number, people_inside: number) {
+    return ('<h2 routerLink="/location/detail/' + id + '">' + name + '</h2>' +
+            '<h3>' + people_inside + '/' + maximum_capacity + '</h3>');
+  }
+
   createLandmark(location) {
-    console.log(location);
     let landmarkFeature = new Feature({
       geometry: new Point([location.latitude, location.longitude]),
+      location_id: location.id,
       name: location.name,
-      /*id: location.id,
       maximum_capacity: location.maximum_capacity,
-      people_inside: location.people_inside,*/
+      people_inside: location.people_inside,
     });
 
-    // let landmarkStyle = new Style({
-    //   image: new Icon({
-    //     anchor: [0.5, 46],
-    //     anchorXUnits: 'fraction',
-    //     anchorYUnits: 'pixels',
-    //     src: 'data/icon.png',
-    //   }),
-    // });
-
-    // landmarkFeature.setStyle(landmarkStyle);
     return landmarkFeature;
   }
 
@@ -86,6 +79,38 @@ export class LocationsComponent implements OnInit {
         zoom: 5
       })
     });
+    /*let popup = new Overlay({
+      element: document.getElementById('popup'),
+      positioning: 'bottom-center',
+      stopEvent: false,
+      offset: [0, -50],
+    });
+    map.addOverlay(popup);
+    map.on('click', function (event) {
+      var feature = map.getFeaturesAtPixel(event.pixel)[0];
+      if (feature) {
+        var coordinate = feature.getGeometry().getCoordinates();
+        popup.setPosition(coordinate);
+        $(element).popover({
+          container: element.parentElement,
+          html: true,
+          sanitize: false,
+          content: this.formatLandmark(coordinate, feature.get('location_id'), feature.get('name'), feature.get('maximum_capacity'), feature.get('people_inside')),
+          placement: 'top',
+        });
+        $(element).popover('show');
+      } else {
+        $(element).popover('dispose');
+      }
+    });*/
+
+    map.on('pointermove', function (event) {
+      if (map.hasFeatureAtPixel(event.pixel)) {
+        map.getViewport().style.cursor = 'pointer';
+      } else {
+        map.getViewport().style.cursor = 'inherit';
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -93,7 +118,7 @@ export class LocationsComponent implements OnInit {
     this.locationsService.get_locations()
       .subscribe( 
         (data) => {
-          this.map = this.createMap('locations_map', [-58.4323658, -34.5655463], data["locations"]);
+          this.createMap('locations_map', [-58.4323658, -34.5655463], data["locations"]);
         }
     )
   }
