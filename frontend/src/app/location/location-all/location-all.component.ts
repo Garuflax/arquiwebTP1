@@ -79,30 +79,26 @@ export class LocationsComponent implements OnInit {
         zoom: 5
       })
     });
-    /*let popup = new Overlay({
-      element: document.getElementById('popup'),
+    let element = document.getElementById('popup');
+    let popup = new Overlay({
+      element: element,
       positioning: 'bottom-center',
       stopEvent: false,
       offset: [0, -50],
     });
+    let innerHTMLfunction = this.formatLandmark;
     map.addOverlay(popup);
     map.on('click', function (event) {
       var feature = map.getFeaturesAtPixel(event.pixel)[0];
       if (feature) {
         var coordinate = feature.getGeometry().getCoordinates();
+        element.innerHTML = innerHTMLfunction(feature.get('location_id'), feature.get('name'), feature.get('maximum_capacity'), feature.get('people_inside'));
         popup.setPosition(coordinate);
-        $(element).popover({
-          container: element.parentElement,
-          html: true,
-          sanitize: false,
-          content: this.formatLandmark(coordinate, feature.get('location_id'), feature.get('name'), feature.get('maximum_capacity'), feature.get('people_inside')),
-          placement: 'top',
-        });
-        $(element).popover('show');
+        // TODO set placement: 'top' para que se lo pueda clickear e ir al detalle de la locación
       } else {
-        $(element).popover('dispose');
+        element.innerHTML = '';
       }
-    });*/
+    });
 
     map.on('pointermove', function (event) {
       if (map.hasFeatureAtPixel(event.pixel)) {
