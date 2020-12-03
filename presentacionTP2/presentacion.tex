@@ -1,0 +1,70 @@
+\documentclass{beamer}
+
+%\usepackage[utf8]{inputenc} %Para acentos en UTF8 (Prueba: á é í ó ú Á É Í Ó Ú ñ Ñ)
+
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[absolute,overlay]{textpos}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+
+\usetheme{Warsaw}
+
+\usecolortheme[rgb={1,0.48,0.0}]{structure}%divido los RGB por 252
+\setbeamercolor{block title}{fg=white,bg=verdeuca}
+\xdefinecolor{verdeuca}{rgb}{0.0,0.48,0.54}
+\xdefinecolor{naranjauca}{rgb}{1,0.48,0.0}
+\setbeamercolor{palette quaternary}{fg=white,bg=verdeuca}
+
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{color}
+
+\title{Presentación Trabajo Práctico 2}
+\subtitle{Arquitecturas de Aplicaciones Web}
+
+\author[ArquiWebTeam 7]{Facundo Linari \and Franco Nicolás Castagna}
+\institute{Departamento de Computación\\
+Facultad de Ciencias Exactas y Naturales\\
+Universidad de Buenos Aires}
+\date{9-12-20}
+
+\definecolor{celeste}{rgb}{.255,.41,.884}
+\definecolor{rojo}{rgb}{1, 0, 0}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}
+    \frametitle{Agenda}
+    \begin{itemize}\setlength\itemsep{1em}
+     \item[-] SEO
+     \item[-] Analytics
+     \item[-] OpenStreetMap
+     \item[-] Código QR
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Angular HttpInterceptor}
+    Decorator de requests http. Incrustar token en todas las request y redirigir en caso de error. Ya sea por estar vencido el token o no tener permiso de realizar la acción.
+    \includegraphics[width=0.9\textwidth]{img/matomo-logo.jpg}
+    
+\end{frame}
+
+\begin{frame}[plain]
+    \begin{center}
+    \Huge ¡¡¡Gracias!!! \\
+    \vspace{1cm}
+    \Huge ¿Preguntas?
+    \end{center}
+\end{frame}
+
+\begin{frame}[plain]
+    \begin{center}
+    \Huge Demo en vivo
+    \end{center}
+\end{frame}
+
+\end{document}
