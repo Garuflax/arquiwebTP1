@@ -28,7 +28,7 @@ export class LocationsComponent implements OnInit {
   constructor(private locationsService: LocationsService) { }
 
   formatLandmark(id: number, name: string, maximum_capacity: number, people_inside: number) {
-    return ('<a href="/location/detail/' + id + '">' + name + '</a>' +
+    return ('<a href="/static/#/location/detail/' + id + '">' + name + '</a>' +
             '<h3>' + people_inside + '/' + maximum_capacity + '</h3>');
   }
 

@@ -84,8 +84,9 @@ def create_app(test_config=None):
     from . import admin
     app.register_blueprint(admin.bp)
 
-    @app.route('/', methods=['GET'])
-    def root():
-        return render_template('index.html')
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def catch_all(path):
+        return app.send_static_file("index.html")
 
     return app
