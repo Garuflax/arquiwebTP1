@@ -28,7 +28,7 @@ export class LocationsComponent implements OnInit {
   constructor(private locationsService: LocationsService) { }
 
   formatLandmark(id: number, name: string, maximum_capacity: number, people_inside: number) {
-    return ('<h2 routerLink="/location/detail/' + id + '">' + name + '</h2>' +
+    return ('<a href="/location/detail/' + id + '">' + name + '</a>' +
             '<h3>' + people_inside + '/' + maximum_capacity + '</h3>');
   }
 
@@ -93,10 +93,10 @@ export class LocationsComponent implements OnInit {
       if (feature) {
         var coordinate = feature.getGeometry().getCoordinates();
         element.innerHTML = innerHTMLfunction(feature.get('location_id'), feature.get('name'), feature.get('maximum_capacity'), feature.get('people_inside'));
+        element.style.display = 'block';
         popup.setPosition(coordinate);
-        // TODO set placement: 'top' para que se lo pueda clickear e ir al detalle de la locación
       } else {
-        element.innerHTML = '';
+        element.style.display = 'none';
       }
     });
 
