@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { GetStatusService } from 'src/app/user/get-status.service';
 import { AuthService } from '../auth.service';
@@ -19,7 +20,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private getStatusService: GetStatusService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private titleService: Title,
+    private metaTagService: Meta
   ) {
       this.loginForm = this.formBuilder.group({
           username: '',
@@ -28,6 +31,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Login - Yo estuve ahí');
+    this.metaTagService.updateTag(
+      { name: 'description', content: 'Login Form' }
+    );
   }
 
   login(userData) {

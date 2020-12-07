@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import { saveAs } from 'file-saver';
 import { GetStatusService } from '../../user/get-status.service'
 import { LocationsService } from './../location-all/location-all.service';
@@ -24,9 +25,15 @@ export class LocationDetailComponent implements OnInit {
     private locationDetailService: LocationDetailService,
     private router: Router,
     private route: ActivatedRoute,
+    private titleService: Title,
+    private metaTagService: Meta
     ){}
 
   ngOnInit(): void {
+    this.titleService.setTitle('Detalle de locación - Yo estuve ahí');
+    this.metaTagService.updateTag(
+      { name: 'description', content: 'Detalles de locación, como la capacidad y cantidad de gente actual' }
+    );
     this.location_id = Number(this.route.snapshot.paramMap.get('id'));
     this.getStatusService.getStatus()
     .subscribe( 

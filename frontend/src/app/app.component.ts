@@ -8,7 +8,7 @@ import { Meta } from '@angular/platform-browser';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Yo estuve ahi';
+  title = 'Yo estuve ahí';
   subtitle = 'COVID tracker';
 
   constructor(

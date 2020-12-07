@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import { GetStatusService } from 'src/app/user/get-status.service';
 import { AuthService } from '../auth.service';
 
@@ -16,7 +17,9 @@ export class RegistrationComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private getStatusService: GetStatusService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private titleService: Title,
+    private metaTagService: Meta
     ) {
     this.registerForm = this.formBuilder.group({
         username: '',
@@ -26,6 +29,10 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Registro - Yo estuve ahí');
+    this.metaTagService.updateTag(
+      { name: 'description', content: 'Formulario de Registro' }
+    );
   }
 
   register(userData) {

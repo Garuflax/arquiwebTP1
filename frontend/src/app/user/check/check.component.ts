@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title, Meta } from '@angular/platform-browser';
 import { CheckService } from './check.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
@@ -19,9 +20,15 @@ export class CheckComponent implements OnInit {
   constructor(
     private checkService: CheckService,
     private router: Router,
+    private titleService: Title,
+    private metaTagService: Meta
   ){}
 
   ngOnInit(): void {
+    this.titleService.setTitle('Check - Yo estuve ahí');
+    this.metaTagService.updateTag(
+      { name: 'description', content: 'Entrar o salir de locación' }
+    );
     this.has_to_checkin = this.router.url == "/user/checkin";
   }
 

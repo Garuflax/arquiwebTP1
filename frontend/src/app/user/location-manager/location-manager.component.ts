@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { Title, Meta } from '@angular/platform-browser';
 import { FormBuilder } from '@angular/forms';
 import { AddLocationService } from '../../location/add-location.service';
 
@@ -16,7 +17,9 @@ export class LocationManagerComponent implements OnInit {
   constructor(
         private router: Router,
         private addLocationService: AddLocationService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private titleService: Title,
+        private metaTagService: Meta
         ) {
       this.locationForm = this.formBuilder.group({
             name: '',
@@ -27,6 +30,10 @@ export class LocationManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Menú de locación - Yo estuve ahí');
+    this.metaTagService.updateTag(
+      { name: 'description', content: 'Agregar y mirar locaciones' }
+    );
   }
 
   addLocation(locationData) {

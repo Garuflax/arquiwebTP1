@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title, Meta } from '@angular/platform-browser';
 import { GetStatusService } from '../get-status.service'
 import { InformService } from '../inform.service'
 
@@ -13,10 +14,16 @@ export class UserComponent implements OnInit {
   is_infected;
 
   constructor(private getStatusService: GetStatusService,
-    private informService: InformService
+    private informService: InformService,
+    private titleService: Title,
+    private metaTagService: Meta
     ) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Menu de usuario - Yo estuve ahí');
+    this.metaTagService.updateTag(
+      { name: 'description', content: 'User Menu' }
+    );
     this.getStatusService.getStatus()
       .subscribe( 
         (response) => {
