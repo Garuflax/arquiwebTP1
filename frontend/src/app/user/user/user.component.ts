@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Menu de usuario - Yo estuve ahí');
+    this.titleService.setTitle('Menú de usuario - Yo estuve ahí');
     this.metaTagService.updateTag(
       { name: 'description', content: 'User Menu' }
     );
