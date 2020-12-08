@@ -8,10 +8,12 @@
       </mat-toolbar>
       <form [formGroup]="locationForm" (ngSubmit)="addLocation(locationForm.value)" fxLayoutAlign="stretch" fxLayout="column" class="login-form" style="text-align:center;">
           
-          <mat-form-field>
-            <input matInput placeholder="Nombre" formControlName="name">
-          </mat-form-field>
-        
+          <!-- <mat-form-field>
+           <input matInput placeholder="Nombre" formControlName="name"> -->
+          <!-- </mat-form-field> --> 
+
+          <app-places (onChange)="onSuggestion($event)"></app-places>
+
           <mat-form-field>
             <input matInput placeholder="Capacidad Máxima" formControlName="maximum_capacity">
           </mat-form-field>
@@ -29,6 +31,5 @@
         <h2 style="font-weight: bolder;margin-top: 10px;"> LOCACIONES </h2>
         <app-locations style="margin-top: 10px;"></app-locations>
       </form>
-        
       </mat-card>
 </div>

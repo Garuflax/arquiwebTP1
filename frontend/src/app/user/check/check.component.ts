@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { CheckService } from './check.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { QrScannerComponent } from 'angular2-qrscanner';
 
 @Component({
   selector: 'app-check',
   templateUrl: './check.component.html',
-  styleUrls: ['./check.component.css']
+  styleUrls: ['./check.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CheckComponent implements OnInit {
 
   currentDevice: MediaDeviceInfo = null;
-  tryHarder: boolean = false;
+  tryHarder: boolean = true;
   has_to_checkin: boolean;
   message: string;
+  scanned: boolean = false;
 
   qrResult: string;
 
@@ -24,12 +27,51 @@ export class CheckComponent implements OnInit {
     private metaTagService: Meta
   ){}
 
+  // @ViewChild('test', {static: true}) test;
+  
+  @ViewChild(QrScannerComponent, {static: true}) qrScannerComponent ;
   ngOnInit(): void {
     this.titleService.setTitle('Check - Yo estuve ahí');
     this.metaTagService.updateTag(
       { name: 'description', content: 'Entrar o salir de locación' }
     );
     this.has_to_checkin = this.router.url == "/user/checkin";
+
+
+    this.qrScannerComponent.getMediaDevices().then(devices => {
+      const videoDevices: MediaDeviceInfo[] = [];
+      for (const device of devices) {
+          if (device.kind.toString() === 'videoinput') {
+              videoDevices.push(device);
+          }
+      }
+      if (videoDevices.length > 0){
+          let choosenDev;
+          for (const dev of videoDevices){
+              if (dev.label.includes('front')){
+                  choosenDev = dev;
+                  break;
+              }
+          }
+          if (choosenDev) {
+              this.qrScannerComponent.chooseCamera.next(choosenDev);
+          } else {
+              this.qrScannerComponent.chooseCamera.next(videoDevices[0]);
+          }
+      }
+  });
+
+  this.qrScannerComponent.capturedQr.subscribe(result => {
+      this.scanned = true;
+      this.onCodeResult(result)
+  });
+
+
+
+
+
+
+
   }
 
 

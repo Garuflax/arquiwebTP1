@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
+import { NgQrScannerModule } from 'angular2-qrscanner';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user/user.component';
 import { CheckComponent } from './check/check.component';
@@ -27,13 +28,16 @@ import {MatCardModule} from '@angular/material/card';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
+import { PlacesComponent } from './location-manager/places.component';
+
 
 @NgModule({
-  declarations: [UserComponent, CheckComponent, LocationManagerComponent, AlertComponent],
+  declarations: [UserComponent, CheckComponent, LocationManagerComponent, AlertComponent, PlacesComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
     ZXingScannerModule,
+    NgQrScannerModule,
     FormsModule,
     ReactiveFormsModule,
     AuthModule,

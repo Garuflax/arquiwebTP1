@@ -1,12 +1,12 @@
 #locations_map {
     height: 400px;
     width: 100%;
-  }
+}
 
 #popup {
     background-color: white;
     border: 1px solid #ccc;
-  }
+}
 /*
 agm-map {
     height: 300px;

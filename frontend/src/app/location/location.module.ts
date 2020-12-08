@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { PlacesComponent } from '../user/location-manager/places.component';
 
 @NgModule({
   declarations: [LocationsComponent, LocationDetailComponent],

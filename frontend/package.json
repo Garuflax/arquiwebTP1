@@ -27,9 +27,13 @@
     "@zxing/browser": "0.0.3",
     "@zxing/library": "^0.18.2",
     "@zxing/ngx-scanner": "^3.1.1",
+    "angular-qr-scanner": "^0.1.5",
+    "angular2-qrscanner": "^1.0.7",
     "file-saver": "^2.0.2",
     "ngx-filesaver": "^10.0.1",
+    "ngx-qr": "^1.1.13",
     "ol": "^6.4.3",
+    "places.js": "^1.19.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

@@ -36,6 +36,15 @@ export class LocationManagerComponent implements OnInit {
     );
   }
 
+  onSuggestion($event) {
+    let lat = $event.suggestion.latlng.lat
+    let lng = $event.suggestion.latlng.lng
+    let name = $event.suggestion.name
+    this.locationForm.get('latitude').setValue(lng)
+    this.locationForm.get('longitude').setValue(lat)
+    this.locationForm.get('name').setValue(name)
+  }
+
   addLocation(locationData) {
       this.addLocationService.addLocation(locationData)
         .subscribe(response => {
@@ -44,5 +53,6 @@ export class LocationManagerComponent implements OnInit {
 
         this.locationForm.reset();
   }
+
 
 }
